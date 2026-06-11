@@ -10,11 +10,14 @@ FALSE = e^(i·π/2)  = i   (θ = π/2)
 厳密な一致判定でラベルを決定します。
 
 代表的な真理値ラベル:
-  T  (真)      θ = 0      行列値 =  1
-  F  (偽)      θ = π/2    行列値 =  i
-  ¬T (反真)    θ = π      行列値 = -1
-  ¬F (反偽)    θ = 3π/2   行列値 = -i
+  T  (真)      θ = 0      行列値 =  1   cos(θ) > 0
+  F  (偽)      θ = π/2    行列値 =  i   cos(θ) = 0
+  ¬T (反真)    θ = π      行列値 = -1   cos(θ) < 0  → 古典論理への写像なし
+  ¬F (反偽)    θ = 3π/2   行列値 = -i   cos(θ) = 0
   N  (Neither) その他の位相
+
+古典論理への写像は cos(θ) で行う:
+  cos(θ) > 0 → T,  cos(θ) = 0 → F,  cos(θ) < 0 → — (考察外)
 """
 
 from collections.abc import Callable
@@ -61,6 +64,21 @@ def _label(upl: UnitaryPhaseLogic) -> str:
     return f"N (θ={theta})"
 
 
+def _classical(upl: UnitaryPhaseLogic) -> str:
+    """
+    古典論理への写像: cos(θ) を用いる。
+      cos(θ) > 0  → T
+      cos(θ) = 0  → F
+      cos(θ) < 0  → — (考察外)
+    """
+    cos_val = float(np.real(upl.U[0, 0]))   # Re(e^iθ) = cos(θ)
+    if np.isclose(cos_val, 0.0):
+        return "F"
+    if cos_val > 0:
+        return "T"
+    return "—"
+
+
 # ────────────────────────────────────────────────────────────
 # 真理値表の構築
 # ────────────────────────────────────────────────────────────
@@ -70,10 +88,10 @@ def build_unary_table(
     op_fn: Callable[[UnitaryPhaseLogic], UnitaryPhaseLogic],
 ) -> list[str]:
     """単項演算子の真理値表行を返す。"""
-    rows = [f"| A | {op_name}(A) |", "| --- | --- |"]
+    rows = [f"| A | {op_name}(A) | 古典論理 |", "| --- | --- | --- |"]
     for a_name, a_val in INPUTS:
         result = op_fn(a_val)
-        rows.append(f"| {a_name} | {_label(result)} |")
+        rows.append(f"| {a_name} | {_label(result)} | {_classical(result)} |")
     return rows
 
 
@@ -82,11 +100,13 @@ def build_binary_table(
     op_fn: Callable[[UnitaryPhaseLogic, UnitaryPhaseLogic], UnitaryPhaseLogic],
 ) -> list[str]:
     """二項演算子の真理値表行を返す。"""
-    rows = [f"| A | B | A {op_name} B |", "| --- | --- | --- |"]
+    rows = [f"| A | B | A {op_name} B | 古典論理 |", "| --- | --- | --- | --- |"]
     for a_name, a_val in INPUTS:
         for b_name, b_val in INPUTS:
             result = op_fn(a_val, b_val)
-            rows.append(f"| {a_name} | {b_name} | {_label(result)} |")
+            rows.append(
+                f"| {a_name} | {b_name} | {_label(result)} | {_classical(result)} |"
+            )
     return rows
 
 
@@ -94,14 +114,15 @@ def generate() -> str:
     """全演算子の真理値表を Markdown 文字列として返す。"""
     sections = [
         "# UnitaryPhaseLogic — 真理値表\n",
-        "角度表記は弧度法。代表的な真理値ラベル:\n",
-        "| ラベル | 行列値 | 位相 |",
-        "| --- | --- | --- |",
-        "| T  (真)   |  1 | θ = 0 |",
-        "| F  (偽)   |  i | θ = π/2 |",
-        "| ¬T (反真) | -1 | θ = π |",
-        "| ¬F (反偽) | -i | θ = 3π/2 |",
-        "| N  (Neither) | その他 | θ = その他 |\n",
+        "角度表記は弧度法。古典論理への写像は cos(θ) で行う"
+        " (cos(θ) < 0 の点は考察外):\n",
+        "| ラベル | 行列値 | 位相 | cos(θ) | 古典論理 |",
+        "| --- | --- | --- | --- | --- |",
+        "| T  (真)      |  1 | θ = 0    | > 0 | T |",
+        "| F  (偽)      |  i | θ = π/2  | = 0 | F |",
+        "| ¬T (反真)    | -1 | θ = π    | < 0 | — |",
+        "| ¬F (反偽)    | -i | θ = 3π/2 | = 0 | F |",
+        "| N  (Neither) | その他 | θ = その他 | — | — |\n",
         "---\n",
         "## NOT (否定): ¬A = i · A†\n",
     ]
