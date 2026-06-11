@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 
-import { conj, disj, getElem, impl, neg, phaseToId, L4 } from "./src/u1_logic_core.js";
+import { conj, disj, getElem, impl, neg, phaseToId, L4 } from "../src/u1_logic_core.js";
 
 const IDS = L4.map((e) => e.id);
 
