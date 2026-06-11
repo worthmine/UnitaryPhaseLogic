@@ -523,7 +523,7 @@ function App() {
         /* @__PURE__ */ jsx(TautologyRow, { label: "\u77DB\u76FE\u5F8B A\u2227\xACA", fn: (a) => conj(a, neg(a)), expected: "F" }),
         /* @__PURE__ */ jsx(TautologyRow, { label: "\u4E8C\u91CD\u5426\u5B9A \xAC\xACA = A", fn: (a) => {
           const r = neg(neg(a));
-          return r === a ? r : "__mismatch__";
+          return r === a ? "+1" : "+i";
         }, expected: "T" }),
         /* @__PURE__ */ jsx("div", { style: { marginTop: 24, marginBottom: 12, color: "#4a4a7a", fontSize: 11 }, children: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u7B2C\u4E00\u6CD5\u5247\u3000\xAC(A\u2227B) = \xACA\u2228\xACB\u3000\uFF08\u516816\u7D44\uFF09" }),
         /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: L4.flatMap((a) => L4.map((b) => {
