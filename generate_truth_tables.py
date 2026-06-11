@@ -3,10 +3,18 @@
 UnitaryPhaseLogic の各演算子の真理値表を標準出力および
 truth_tables.md ファイルに出力します。
 
-TRUE  = e^(i·0°)   = 1   (θ = 0°)
-FALSE = e^(i·90°)  = i   (θ = 90°)
+TRUE  = e^(i·0)    = 1   (θ = 0)
+FALSE = e^(i·π/2)  = i   (θ = π/2)
 
-各セルは結果の位相角（度数法）と対応するラベルを示します。
+角度表記は弧度法に統一。値の丸め演算は行わず、np.isclose による
+厳密な一致判定でラベルを決定します。
+
+代表的な真理値ラベル:
+  T  (真)      θ = 0      行列値 =  1
+  F  (偽)      θ = π/2    行列値 =  i
+  ¬T (反真)    θ = π      行列値 = -1
+  ¬F (反偽)    θ = 3π/2   行列値 = -i
+  N  (Neither) その他の位相
 """
 
 from collections.abc import Callable
@@ -25,31 +33,32 @@ INPUTS = [
     ("F", FALSE),
 ]
 
-# 位相角→ラベルの対応（近似）
-_LABEL = {
-    0.0:   "T",    # 真
-    90.0:  "F",    # 偽
-    180.0: "¬T",   # 反真
-    270.0: "¬F",   # 反偽
-}
+# 代表的な位相（弧度）とラベルの対応
+_CANONICAL: list[tuple[complex, str]] = [
+    ( 1+0j, "T"),    # θ = 0
+    ( 0+1j, "F"),    # θ = π/2
+    (-1+0j, "¬T"),   # θ = π
+    ( 0-1j, "¬F"),   # θ = 3π/2
+]
 
 
-def _phase_deg(upl: UnitaryPhaseLogic) -> float:
-    """UnitaryPhaseLogic インスタンスの位相角を 0–360° で返す。"""
-    deg = round(np.degrees(np.angle(upl.U[0, 0])) % 360, 1)
-    # 浮動小数点誤差: % 360 後の微小負数 (例 -3e-15) を round すると
-    # 360.0 になることがあるため 0.0 に正規化する。
-    return 0.0 if deg >= 360.0 else deg
+def _phase_rad(upl: UnitaryPhaseLogic) -> float:
+    """UnitaryPhaseLogic インスタンスの位相角を [0, 2π) の弧度で返す。"""
+    raw = np.angle(upl.U[0, 0])        # (-π, π]
+    return float(raw % (2 * np.pi))    # [0, 2π)
 
 
 def _label(upl: UnitaryPhaseLogic) -> str:
-    """位相角に対応するラベル文字列を返す。"""
-    deg = _phase_deg(upl)
-    # 360° の折り返しを考慮して近似一致を探す
-    for key, name in _LABEL.items():
-        if abs(deg - key) < 0.1:
-            return f"{name} ({deg:.1f}°)"
-    return f"({deg:.1f}°)"
+    """
+    行列値を代表的な 4 値と np.isclose で比較しラベルを返す。
+    どれにも一致しない場合は N (θ=<弧度>) を返す。
+    """
+    val = complex(upl.U[0, 0])
+    for canonical_val, name in _CANONICAL:
+        if np.isclose(val, canonical_val):
+            return name
+    theta = _phase_rad(upl)
+    return f"N (θ={theta})"
 
 
 # ────────────────────────────────────────────────────────────
@@ -85,8 +94,14 @@ def generate() -> str:
     """全演算子の真理値表を Markdown 文字列として返す。"""
     sections = [
         "# UnitaryPhaseLogic — 真理値表\n",
-        "- **T** = TRUE  (θ = 0°,  行列値 = 1)",
-        "- **F** = FALSE (θ = 90°, 行列値 = i)\n",
+        "角度表記は弧度法。代表的な真理値ラベル:\n",
+        "| ラベル | 行列値 | 位相 |",
+        "| --- | --- | --- |",
+        "| T  (真)   |  1 | θ = 0 |",
+        "| F  (偽)   |  i | θ = π/2 |",
+        "| ¬T (反真) | -1 | θ = π |",
+        "| ¬F (反偽) | -i | θ = 3π/2 |",
+        "| N  (Neither) | その他 | θ = その他 |\n",
         "---\n",
         "## NOT (否定): ¬A = i · A†\n",
     ]
