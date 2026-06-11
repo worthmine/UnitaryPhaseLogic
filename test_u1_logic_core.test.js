@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { conj, disj, impl, neg, L4 } from "./src/u1_logic_core.ts";
+import { conj, disj, impl, neg, L4 } from "./src/u1_logic_core.js";
 
 test("negation is involutive on L4", () => {
   for (const value of L4) {
     const once = neg(value.id);
     assert.notEqual(once, null);
-    assert.equal(neg(once as string), value.id);
+    assert.equal(neg(once), value.id);
   }
 });
 

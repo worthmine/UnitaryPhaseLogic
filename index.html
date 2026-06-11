@@ -4,9 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>U1 Logic Visualization</title>
+    <style>
+      .fallback {
+        padding: 24px;
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      .fallback h1 {
+        margin: 0 0 8px;
+      }
+      .fallback p {
+        margin: 0 0 8px;
+      }
+      .fallback p:last-child {
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="root">
+      <div class="fallback">
+        <h1>U1 Logic Visualization</h1>
+        <p>読み込み中です。何も表示されない場合はページを再読み込みしてください。</p>
+        <p>If the app stays blank, please reload and check the browser console.</p>
+      </div>
+    </div>
+    <noscript>
+      <div class="fallback">
+        JavaScript が無効です。表示には JavaScript を有効化してください。
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
