@@ -13,7 +13,7 @@ import numpy as np
 
 from UnitaryPhaseLogic import UnitaryPhaseLogic
 from generate_truth_tables import (
-    TRUE, FALSE,
+    TRUE, FALSE, NOT_T, NOT_F, N,
     _label, _classical,
 )
 
@@ -64,8 +64,11 @@ class TestTruthTableLabels(unittest.TestCase):
     """各演算子が正しい UPL ラベルを返すことを検証する。"""
 
     def setUp(self):
-        self.T = TRUE
-        self.F = FALSE
+        self.T  = TRUE
+        self.F  = FALSE
+        self.NT = NOT_T
+        self.NF = NOT_F
+        self.N  = N
 
     # ── NOT ──────────────────────────────────────────────────
 
@@ -77,6 +80,18 @@ class TestTruthTableLabels(unittest.TestCase):
         """NOT F = T"""
         self.assertEqual(_label(self.F.NOT()), "T")
 
+    def test_not_not_t(self):
+        """NOT ¬T = ¬F"""
+        self.assertEqual(_label(self.NT.NOT()), "¬F")
+
+    def test_not_not_f(self):
+        """NOT ¬F = ¬T"""
+        self.assertEqual(_label(self.NF.NOT()), "¬T")
+
+    def test_not_n(self):
+        """NOT N = N"""
+        self.assertEqual(_label(self.N.NOT()), "N")
+
     # ── AND ──────────────────────────────────────────────────
 
     def test_and_tt(self):
@@ -87,6 +102,18 @@ class TestTruthTableLabels(unittest.TestCase):
         """T ∧ F = F"""
         self.assertEqual(_label(self.T.AND(self.F)), "F")
 
+    def test_and_t_nt(self):
+        """T ∧ ¬T = ¬T"""
+        self.assertEqual(_label(self.T.AND(self.NT)), "¬T")
+
+    def test_and_t_nf(self):
+        """T ∧ ¬F = ¬F"""
+        self.assertEqual(_label(self.T.AND(self.NF)), "¬F")
+
+    def test_and_tn(self):
+        """T ∧ N = N"""
+        self.assertEqual(_label(self.T.AND(self.N)), "N")
+
     def test_and_ft(self):
         """F ∧ T = F"""
         self.assertEqual(_label(self.F.AND(self.T)), "F")
@@ -94,6 +121,78 @@ class TestTruthTableLabels(unittest.TestCase):
     def test_and_ff(self):
         """F ∧ F = ¬T  (非古典的結果)"""
         self.assertEqual(_label(self.F.AND(self.F)), "¬T")
+
+    def test_and_f_nt(self):
+        """F ∧ ¬T = ¬F"""
+        self.assertEqual(_label(self.F.AND(self.NT)), "¬F")
+
+    def test_and_f_nf(self):
+        """F ∧ ¬F = T"""
+        self.assertEqual(_label(self.F.AND(self.NF)), "T")
+
+    def test_and_fn(self):
+        """F ∧ N = N"""
+        self.assertEqual(_label(self.F.AND(self.N)), "N")
+
+    def test_and_ntt(self):
+        """¬T ∧ T = ¬T"""
+        self.assertEqual(_label(self.NT.AND(self.T)), "¬T")
+
+    def test_and_ntf(self):
+        """¬T ∧ F = ¬F"""
+        self.assertEqual(_label(self.NT.AND(self.F)), "¬F")
+
+    def test_and_nt_nt(self):
+        """¬T ∧ ¬T = T"""
+        self.assertEqual(_label(self.NT.AND(self.NT)), "T")
+
+    def test_and_nt_nf(self):
+        """¬T ∧ ¬F = F"""
+        self.assertEqual(_label(self.NT.AND(self.NF)), "F")
+
+    def test_and_ntn(self):
+        """¬T ∧ N = N"""
+        self.assertEqual(_label(self.NT.AND(self.N)), "N")
+
+    def test_and_nft(self):
+        """¬F ∧ T = ¬F"""
+        self.assertEqual(_label(self.NF.AND(self.T)), "¬F")
+
+    def test_and_nff(self):
+        """¬F ∧ F = T"""
+        self.assertEqual(_label(self.NF.AND(self.F)), "T")
+
+    def test_and_nf_nt(self):
+        """¬F ∧ ¬T = F"""
+        self.assertEqual(_label(self.NF.AND(self.NT)), "F")
+
+    def test_and_nf_nf(self):
+        """¬F ∧ ¬F = ¬T"""
+        self.assertEqual(_label(self.NF.AND(self.NF)), "¬T")
+
+    def test_and_nfn(self):
+        """¬F ∧ N = N"""
+        self.assertEqual(_label(self.NF.AND(self.N)), "N")
+
+    def test_and_nt(self):
+        """N ∧ T = N"""
+        self.assertEqual(_label(self.N.AND(self.T)), "N")
+
+    def test_and_nf(self):
+        """N ∧ F = N"""
+        self.assertEqual(_label(self.N.AND(self.F)), "N")
+
+    def test_and_n_nt(self):
+        """N ∧ ¬T = N"""
+        self.assertEqual(_label(self.N.AND(self.NT)), "N")
+
+    def test_and_n_nf(self):
+        """N ∧ ¬F = N"""
+        self.assertEqual(_label(self.N.AND(self.NF)), "N")
+
+    def test_and_nn(self):
+        """N ∧ N = N  (θ=5π/6 の場合: e^{i5π/6}·e^{i5π/6} = e^{i5π/3} → N)"""
+        self.assertEqual(_label(self.N.AND(self.N)), "N")
 
     # ── OR ───────────────────────────────────────────────────
 
@@ -105,6 +204,18 @@ class TestTruthTableLabels(unittest.TestCase):
         """T ∨ F = T"""
         self.assertEqual(_label(self.T.OR(self.F)), "T")
 
+    def test_or_t_nt(self):
+        """T ∨ ¬T = F"""
+        self.assertEqual(_label(self.T.OR(self.NT)), "F")
+
+    def test_or_t_nf(self):
+        """T ∨ ¬F = ¬T"""
+        self.assertEqual(_label(self.T.OR(self.NF)), "¬T")
+
+    def test_or_tn(self):
+        """T ∨ N = N"""
+        self.assertEqual(_label(self.T.OR(self.N)), "N")
+
     def test_or_ft(self):
         """F ∨ T = T"""
         self.assertEqual(_label(self.F.OR(self.T)), "T")
@@ -112,6 +223,78 @@ class TestTruthTableLabels(unittest.TestCase):
     def test_or_ff(self):
         """F ∨ F = F"""
         self.assertEqual(_label(self.F.OR(self.F)), "F")
+
+    def test_or_f_nt(self):
+        """F ∨ ¬T = ¬T"""
+        self.assertEqual(_label(self.F.OR(self.NT)), "¬T")
+
+    def test_or_f_nf(self):
+        """F ∨ ¬F = ¬F"""
+        self.assertEqual(_label(self.F.OR(self.NF)), "¬F")
+
+    def test_or_fn(self):
+        """F ∨ N = N"""
+        self.assertEqual(_label(self.F.OR(self.N)), "N")
+
+    def test_or_ntt(self):
+        """¬T ∨ T = F"""
+        self.assertEqual(_label(self.NT.OR(self.T)), "F")
+
+    def test_or_ntf(self):
+        """¬T ∨ F = ¬T"""
+        self.assertEqual(_label(self.NT.OR(self.F)), "¬T")
+
+    def test_or_nt_nt(self):
+        """¬T ∨ ¬T = ¬F"""
+        self.assertEqual(_label(self.NT.OR(self.NT)), "¬F")
+
+    def test_or_nt_nf(self):
+        """¬T ∨ ¬F = T"""
+        self.assertEqual(_label(self.NT.OR(self.NF)), "T")
+
+    def test_or_ntn(self):
+        """¬T ∨ N = N"""
+        self.assertEqual(_label(self.NT.OR(self.N)), "N")
+
+    def test_or_nft(self):
+        """¬F ∨ T = ¬T"""
+        self.assertEqual(_label(self.NF.OR(self.T)), "¬T")
+
+    def test_or_nff(self):
+        """¬F ∨ F = ¬F"""
+        self.assertEqual(_label(self.NF.OR(self.F)), "¬F")
+
+    def test_or_nf_nt(self):
+        """¬F ∨ ¬T = T"""
+        self.assertEqual(_label(self.NF.OR(self.NT)), "T")
+
+    def test_or_nf_nf(self):
+        """¬F ∨ ¬F = F"""
+        self.assertEqual(_label(self.NF.OR(self.NF)), "F")
+
+    def test_or_nfn(self):
+        """¬F ∨ N = N"""
+        self.assertEqual(_label(self.NF.OR(self.N)), "N")
+
+    def test_or_nt(self):
+        """N ∨ T = N"""
+        self.assertEqual(_label(self.N.OR(self.T)), "N")
+
+    def test_or_nf(self):
+        """N ∨ F = N"""
+        self.assertEqual(_label(self.N.OR(self.F)), "N")
+
+    def test_or_n_nt(self):
+        """N ∨ ¬T = N"""
+        self.assertEqual(_label(self.N.OR(self.NT)), "N")
+
+    def test_or_n_nf(self):
+        """N ∨ ¬F = N"""
+        self.assertEqual(_label(self.N.OR(self.NF)), "N")
+
+    def test_or_nn(self):
+        """N ∨ N = N  (θ=5π/6 の場合: AND=e^{i5π/3}, -i·e^{i5π/3} = e^{i7π/6} → N)"""
+        self.assertEqual(_label(self.N.OR(self.N)), "N")
 
     # ── IMPLIES ──────────────────────────────────────────────
 
@@ -123,6 +306,18 @@ class TestTruthTableLabels(unittest.TestCase):
         """T ⇒ F = F"""
         self.assertEqual(_label(self.T.IMPLIES(self.F)), "F")
 
+    def test_implies_t_nt(self):
+        """T ⇒ ¬T = ¬T"""
+        self.assertEqual(_label(self.T.IMPLIES(self.NT)), "¬T")
+
+    def test_implies_t_nf(self):
+        """T ⇒ ¬F = ¬F"""
+        self.assertEqual(_label(self.T.IMPLIES(self.NF)), "¬F")
+
+    def test_implies_tn(self):
+        """T ⇒ N = N"""
+        self.assertEqual(_label(self.T.IMPLIES(self.N)), "N")
+
     def test_implies_ft(self):
         """F ⇒ T = ¬F  (非古典的結果)"""
         self.assertEqual(_label(self.F.IMPLIES(self.T)), "¬F")
@@ -130,6 +325,78 @@ class TestTruthTableLabels(unittest.TestCase):
     def test_implies_ff(self):
         """F ⇒ F = T"""
         self.assertEqual(_label(self.F.IMPLIES(self.F)), "T")
+
+    def test_implies_f_nt(self):
+        """F ⇒ ¬T = F"""
+        self.assertEqual(_label(self.F.IMPLIES(self.NT)), "F")
+
+    def test_implies_f_nf(self):
+        """F ⇒ ¬F = ¬T"""
+        self.assertEqual(_label(self.F.IMPLIES(self.NF)), "¬T")
+
+    def test_implies_fn(self):
+        """F ⇒ N = N"""
+        self.assertEqual(_label(self.F.IMPLIES(self.N)), "N")
+
+    def test_implies_ntt(self):
+        """¬T ⇒ T = ¬T"""
+        self.assertEqual(_label(self.NT.IMPLIES(self.T)), "¬T")
+
+    def test_implies_ntf(self):
+        """¬T ⇒ F = ¬F"""
+        self.assertEqual(_label(self.NT.IMPLIES(self.F)), "¬F")
+
+    def test_implies_nt_nt(self):
+        """¬T ⇒ ¬T = T"""
+        self.assertEqual(_label(self.NT.IMPLIES(self.NT)), "T")
+
+    def test_implies_nt_nf(self):
+        """¬T ⇒ ¬F = F"""
+        self.assertEqual(_label(self.NT.IMPLIES(self.NF)), "F")
+
+    def test_implies_ntn(self):
+        """¬T ⇒ N = N"""
+        self.assertEqual(_label(self.NT.IMPLIES(self.N)), "N")
+
+    def test_implies_nft(self):
+        """¬F ⇒ T = F"""
+        self.assertEqual(_label(self.NF.IMPLIES(self.T)), "F")
+
+    def test_implies_nff(self):
+        """¬F ⇒ F = ¬T"""
+        self.assertEqual(_label(self.NF.IMPLIES(self.F)), "¬T")
+
+    def test_implies_nf_nt(self):
+        """¬F ⇒ ¬T = ¬F"""
+        self.assertEqual(_label(self.NF.IMPLIES(self.NT)), "¬F")
+
+    def test_implies_nf_nf(self):
+        """¬F ⇒ ¬F = T"""
+        self.assertEqual(_label(self.NF.IMPLIES(self.NF)), "T")
+
+    def test_implies_nfn(self):
+        """¬F ⇒ N = N"""
+        self.assertEqual(_label(self.NF.IMPLIES(self.N)), "N")
+
+    def test_implies_nt(self):
+        """N ⇒ T = N"""
+        self.assertEqual(_label(self.N.IMPLIES(self.T)), "N")
+
+    def test_implies_nf(self):
+        """N ⇒ F = N"""
+        self.assertEqual(_label(self.N.IMPLIES(self.F)), "N")
+
+    def test_implies_n_nt(self):
+        """N ⇒ ¬T = N"""
+        self.assertEqual(_label(self.N.IMPLIES(self.NT)), "N")
+
+    def test_implies_n_nf(self):
+        """N ⇒ ¬F = N"""
+        self.assertEqual(_label(self.N.IMPLIES(self.NF)), "N")
+
+    def test_implies_nn(self):
+        """N ⇒ N = T  (A⇒A は常に T)"""
+        self.assertEqual(_label(self.N.IMPLIES(self.N)), "T")
 
 
 class TestClassicalMapping(unittest.TestCase):

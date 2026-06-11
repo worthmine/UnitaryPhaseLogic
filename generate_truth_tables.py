@@ -30,10 +30,16 @@ from UnitaryPhaseLogic import UnitaryPhaseLogic
 # ────────────────────────────────────────────────────────────
 TRUE  = UnitaryPhaseLogic(0.0)
 FALSE = UnitaryPhaseLogic(np.pi / 2)
+NOT_T = UnitaryPhaseLogic(np.pi)            # ¬T (-1, θ = π)
+NOT_F = UnitaryPhaseLogic(3 * np.pi / 2)   # ¬F (-i, θ = 3π/2)
+N     = UnitaryPhaseLogic(5 * np.pi / 6)   # N  (e^{i5π/6}, θ = 5π/6)
 
 INPUTS = [
-    ("T", TRUE),
-    ("F", FALSE),
+    ("T",  TRUE),
+    ("F",  FALSE),
+    ("¬T", NOT_T),
+    ("¬F", NOT_F),
+    ("N",  N),
 ]
 
 # 代表的な位相（弧度）とラベルの対応
@@ -54,14 +60,13 @@ def _phase_rad(upl: UnitaryPhaseLogic) -> float:
 def _label(upl: UnitaryPhaseLogic) -> str:
     """
     行列値を代表的な 4 値と np.isclose で比較しラベルを返す。
-    どれにも一致しない場合は N (θ=<弧度>) を返す。
+    どれにも一致しない場合は N (Neither: 非正準位相すべてを表す) を返す。
     """
     val = complex(upl.U[0, 0])
     for canonical_val, name in _CANONICAL:
         if np.isclose(val, canonical_val):
             return name
-    theta = _phase_rad(upl)
-    return f"N (θ={theta})"
+    return "N"
 
 
 def _classical(upl: UnitaryPhaseLogic) -> str:
