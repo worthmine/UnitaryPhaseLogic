@@ -264,7 +264,7 @@ function TautologyRow({ label, fn, expected }) {
   ] });
 }
 const CALC_OPS = [
-  { id: "neg", sym: "\xAC", arity: 1, fn: (a) => neg(a), label: "\xACA = iA\u207B\xB9", color: "#B388FF" },
+  { id: "neg", sym: "\xAC", arity: 1, fn: neg, label: "\xACA = iA\u207B\xB9", color: "#B388FF" },
   { id: "conj", sym: "\u2227", arity: 2, fn: conj, label: "A\u2227B = AB", color: "#00E5FF" },
   { id: "disj", sym: "\u2228", arity: 2, fn: disj, label: "A\u2228B = \u2212iAB", color: "#FF4081" },
   { id: "impl", sym: "\u21D2", arity: 2, fn: impl, label: "A\u21D2B = BA\u207B\xB9", color: "#FFD740" }
