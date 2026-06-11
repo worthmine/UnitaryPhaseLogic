@@ -75,7 +75,10 @@ def _classical(upl: UnitaryPhaseLogic) -> str:
       cos(θ) > 0  → T
       cos(θ) = 0  → F
       cos(θ) < 0  → — (考察外)
+    N (Neither: 非正準位相) は古典論理に対応値なし → —
     """
+    if _label(upl) == "N":
+        return "—"
     cos_val = float(np.real(upl.U[0, 0]))   # Re(e^iθ) = cos(θ)
     if np.isclose(cos_val, 0.0):
         return "F"
