@@ -68,18 +68,18 @@ function CircleDiagram({ title, children, note }) {
     gap: 8,
     minWidth: 280
   }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
+    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
     /* @__PURE__ */ jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
       /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
       /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
       /* @__PURE__ */ jsx("circle", { cx: CX, cy: CY, r: R, fill: "none", stroke: "#1e1e3a", strokeWidth: 1.5 }),
-      /* @__PURE__ */ jsx("text", { x: CX + R + 8, y: CY + 4, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "+1 (T)" }),
-      /* @__PURE__ */ jsx("text", { x: CX + 4, y: CY - R - 8, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "+i (F)" }),
-      /* @__PURE__ */ jsx("text", { x: CX - R - 48, y: CY + 4, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "\u22121 (T)" }),
-      /* @__PURE__ */ jsx("text", { x: CX - 18, y: CY + R + 16, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "\u2212i (F)" }),
+      /* @__PURE__ */ jsx("text", { x: CX + R + 8, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+1 (T)" }),
+      /* @__PURE__ */ jsx("text", { x: CX + 4, y: CY - R - 8, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+i (F)" }),
+      /* @__PURE__ */ jsx("text", { x: CX - R - 48, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u22121 (T)" }),
+      /* @__PURE__ */ jsx("text", { x: CX - 18, y: CY + R + 16, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u2212i (F)" }),
       children
     ] }),
-    note && /* @__PURE__ */ jsx("div", { style: { color: "#4a4a7a", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
+    note && /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
   ] });
 }
 function NegDiagram() {
@@ -113,10 +113,10 @@ function BinaryDiagram({ op, opLabel, title, note, color }) {
     gap: 8,
     minWidth: 280
   }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
+    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
     /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 16, alignItems: "center" }, children: [["A", selA, setSelA], ["B", selB, setSelB]].map(([lbl, val, setter]) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }, children: [
       "            ",
-      /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a", fontSize: 11, fontFamily: "monospace" }, children: lbl }),
+      /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace" }, children: lbl }),
       /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 4 }, children: L4.map((e) => /* @__PURE__ */ jsx("button", { onClick: () => setter(e.id), style: {
         background: val === e.id ? e.color : "#11112a",
         color: val === e.id ? "#000" : e.color,
@@ -133,10 +133,10 @@ function BinaryDiagram({ op, opLabel, title, note, color }) {
       /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
       /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
       /* @__PURE__ */ jsx("circle", { cx: CX, cy: CY, r: R, fill: "none", stroke: "#1e1e3a", strokeWidth: 1.5 }),
-      /* @__PURE__ */ jsx("text", { x: CX + R + 8, y: CY + 4, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "+1" }),
-      /* @__PURE__ */ jsx("text", { x: CX + 4, y: CY - R - 8, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "+i" }),
-      /* @__PURE__ */ jsx("text", { x: CX - R - 28, y: CY + 4, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "\u22121" }),
-      /* @__PURE__ */ jsx("text", { x: CX - 18, y: CY + R + 16, fill: "#2a2a50", fontSize: 11, fontFamily: "monospace", children: "\u2212i" }),
+      /* @__PURE__ */ jsx("text", { x: CX + R + 8, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+1" }),
+      /* @__PURE__ */ jsx("text", { x: CX + 4, y: CY - R - 8, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+i" }),
+      /* @__PURE__ */ jsx("text", { x: CX - R - 28, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u22121" }),
+      /* @__PURE__ */ jsx("text", { x: CX - 18, y: CY + R + 16, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u2212i" }),
       L4.map((e) => {
         const { x, y } = polarToXY(e.phase);
         return /* @__PURE__ */ jsx("circle", { cx: x, cy: y, r: 7, fill: "#11112a", stroke: e.color, strokeWidth: 1, opacity: 0.4 }, e.id);
@@ -153,21 +153,21 @@ function BinaryDiagram({ op, opLabel, title, note, color }) {
     ] }),
     /* @__PURE__ */ jsxs("div", { style: { fontFamily: "monospace", fontSize: 14, color: "#ffffff", letterSpacing: "0.05em" }, children: [
       /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA }),
-      /* @__PURE__ */ jsxs("span", { style: { color: "#4a4a7a" }, children: [
+      /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0" }, children: [
         " ",
         opLabel,
         " "
       ] }),
       /* @__PURE__ */ jsx("span", { style: { color: bElem.color }, children: selB }),
-      /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a" }, children: " = " }),
+      /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0" }, children: " = " }),
       /* @__PURE__ */ jsx("span", { style: { color: resElem.color, fontWeight: "bold" }, children: result }),
-      /* @__PURE__ */ jsxs("span", { style: { color: "#4a4a7a" }, children: [
+      /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0" }, children: [
         " [",
         resElem.iLabel,
         "]"
       ] })
     ] }),
-    note && /* @__PURE__ */ jsx("div", { style: { color: "#4a4a7a", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
+    note && /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
   ] });
 }
 function LawDiagram({ law, title, note }) {
@@ -187,7 +187,7 @@ function LawDiagram({ law, title, note }) {
     gap: 8,
     minWidth: 280
   }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
+    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
     /* @__PURE__ */ jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
       /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
       /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
@@ -224,7 +224,7 @@ function LawDiagram({ law, title, note }) {
       " ",
       rhs
     ] }, a.id)) }),
-    note && /* @__PURE__ */ jsx("div", { style: { color: "#4a4a7a", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
+    note && /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
   ] });
 }
 function TautologyRow({ label, fn, expected }) {
@@ -241,7 +241,7 @@ function TautologyRow({ label, fn, expected }) {
     padding: "8px 0",
     borderBottom: "1px solid #1e1e3a"
   }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontFamily: "monospace", fontSize: 13, width: 160 }, children: label }),
+    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontFamily: "monospace", fontSize: 13, width: 160 }, children: label }),
     /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: results.map(({ a, r, re, ok }) => /* @__PURE__ */ jsxs("div", { style: {
       fontFamily: "monospace",
       fontSize: 11,
@@ -276,7 +276,7 @@ function LawRow({ label, fn, expect }) {
     padding: "8px 0",
     borderBottom: "1px solid #1e1e3a"
   }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontFamily: "monospace", fontSize: 13, width: 160 }, children: label }),
+    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontFamily: "monospace", fontSize: 13, width: 160 }, children: label }),
     /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: results.map(({ a, r, ok }) => /* @__PURE__ */ jsxs("div", { style: {
       fontFamily: "monospace",
       fontSize: 11,
@@ -306,13 +306,13 @@ function BinaryLawTable({ label, lhs, rhs }) {
   }));
   const allOk = results.every((row) => row.every((c) => c.ok));
   return /* @__PURE__ */ jsxs("div", { style: { marginTop: 20 }, children: [
-    /* @__PURE__ */ jsxs("div", { style: { marginBottom: 10, color: "#4a4a7a", fontSize: 11, display: "flex", alignItems: "center", gap: 10 }, children: [
+    /* @__PURE__ */ jsxs("div", { style: { marginBottom: 10, color: "#9a9ad0", fontSize: 11, display: "flex", alignItems: "center", gap: 10 }, children: [
       /* @__PURE__ */ jsx("span", { children: label }),
       /* @__PURE__ */ jsx("span", { style: { color: allOk ? "#00ff88" : "#ff4444", fontSize: 12 }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
     ] }),
     /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
       /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("th", { style: { color: "#4a4a7a", padding: "4px 10px", borderBottom: "1px solid #1e1e3a", borderRight: "1px solid #1e1e3a" }, children: "A \\ B" }),
+        /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a", borderRight: "1px solid #1e1e3a" }, children: "A \\ B" }),
         L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
       ] }) }),
       /* @__PURE__ */ jsx("tbody", { children: L4.map((a, i) => /* @__PURE__ */ jsxs("tr", { children: [
@@ -339,7 +339,7 @@ const CALC_OPS = [
 ];
 function ValuePicker({ label, value, onChange }) {
   return /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }, children: [
-    /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a", fontSize: 12, fontFamily: "monospace" }, children: label }),
+    /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 12, fontFamily: "monospace" }, children: label }),
     /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: L4.map((e) => /* @__PURE__ */ jsxs("button", { onClick: () => onChange(e.id), style: {
       background: value === e.id ? e.color : "#11112a",
       color: value === e.id ? "#000" : e.color,
@@ -378,11 +378,11 @@ function Calculator() {
     minWidth: 280,
     maxWidth: 640
   }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: "\u8AD6\u7406\u6F14\u7B97\u96FB\u5353" }),
+    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: "\u8AD6\u7406\u6F14\u7B97\u96FB\u5353" }),
     /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center", alignItems: "flex-start" }, children: [
       /* @__PURE__ */ jsx(ValuePicker, { label: "A", value: selA, onChange: setSelA }),
       /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }, children: [
-        /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a", fontSize: 12, fontFamily: "monospace" }, children: "\u6F14\u7B97\u5B50" }),
+        /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 12, fontFamily: "monospace" }, children: "\u6F14\u7B97\u5B50" }),
         /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: CALC_OPS.map((o) => /* @__PURE__ */ jsx("button", { onClick: () => setOpId(o.id), title: o.label, style: {
           background: opId === o.id ? o.color : "#11112a",
           color: opId === o.id ? "#000" : o.color,
@@ -418,18 +418,18 @@ function Calculator() {
     ] }),
     /* @__PURE__ */ jsxs("div", { style: { fontFamily: "monospace", fontSize: 20, color: "#ffffff", letterSpacing: "0.05em" }, children: [
       op.arity === 1 ? /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a" }, children: op.sym }),
+        /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0" }, children: op.sym }),
         /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA })
       ] }) : /* @__PURE__ */ jsxs(Fragment, { children: [
         /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA }),
-        /* @__PURE__ */ jsxs("span", { style: { color: "#4a4a7a" }, children: [" ", op.sym, " "] }),
+        /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0" }, children: [" ", op.sym, " "] }),
         /* @__PURE__ */ jsx("span", { style: { color: bElem.color }, children: selB })
       ] }),
-      /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a" }, children: " = " }),
+      /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0" }, children: " = " }),
       /* @__PURE__ */ jsx("span", { style: { color: resElem.color, fontWeight: "bold" }, children: result }),
-      /* @__PURE__ */ jsxs("span", { style: { color: "#4a4a7a", fontSize: 14 }, children: [" [", resElem.iLabel, "]"] })
+      /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0", fontSize: 14 }, children: [" [", resElem.iLabel, "]"] })
     ] }),
-    /* @__PURE__ */ jsx("div", { style: { color: "#4a4a7a", fontSize: 11, fontFamily: "monospace", textAlign: "center" }, children: op.label })
+    /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center" }, children: op.label })
   ] });
 }
 const TABS = [
@@ -450,16 +450,16 @@ function App() {
     padding: "32px 24px"
   }, children: /* @__PURE__ */ jsxs("div", { style: { maxWidth: 900, margin: "0 auto" }, children: [
     /* @__PURE__ */ jsxs("div", { style: { marginBottom: 32, borderBottom: "1px solid #1e1e3a", paddingBottom: 20 }, children: [
-      /* @__PURE__ */ jsx("div", { style: { color: "#4a4a7a", fontSize: 11, letterSpacing: "0.15em", marginBottom: 6 }, children: "U(1) MULTI-VALUED LOGIC" }),
+      /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, letterSpacing: "0.15em", marginBottom: 6 }, children: "U(1) MULTI-VALUED LOGIC" }),
       /* @__PURE__ */ jsx("h1", { style: { margin: 0, fontSize: 22, fontWeight: 400, letterSpacing: "0.05em", color: "#e0e0ff" }, children: "L\u2084 = {+1, \u22121, +i, \u2212i} \u4F4D\u76F8\u56F3\u89E3" }),
       /* @__PURE__ */ jsx("div", { style: { marginTop: 10, display: "flex", gap: 12 }, children: [{ c: "#00E5FF", l: "T (\xB11)" }, { c: "#FF4081", l: "F (\xB1i)" }].map(({ c, l }) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6 }, children: [
         /* @__PURE__ */ jsx("div", { style: { width: 10, height: 10, borderRadius: "50%", background: c, boxShadow: `0 0 6px ${c}` } }),
-        /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a", fontSize: 11 }, children: l })
+        /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 11 }, children: l })
       ] }, l)) })
     ] }),
     /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 4, marginBottom: 28 }, children: TABS.map((t) => /* @__PURE__ */ jsx("button", { onClick: () => setTab(t.id), style: {
       background: tab === t.id ? "#1e1e3a" : "transparent",
-      color: tab === t.id ? "#e0e0ff" : "#4a4a7a",
+      color: tab === t.id ? "#e0e0ff" : "#9a9ad0",
       border: `1px solid ${tab === t.id ? "#3a3a6a" : "#1e1e3a"}`,
       borderRadius: 8,
       padding: "7px 14px",
@@ -483,9 +483,9 @@ function App() {
           flexDirection: "column",
           gap: 10
         }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase" }, children: "\u771F\u7406\u8868" }),
+          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase" }, children: "\u771F\u7406\u8868" }),
           /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 13 }, children: [
-            /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsx("tr", { children: ["A", "I(A)", "\xACA", "I(\xACA)"].map((h) => /* @__PURE__ */ jsx("th", { style: { color: "#4a4a7a", padding: "6px 14px", textAlign: "center", borderBottom: "1px solid #1e1e3a" }, children: h }, h)) }) }),
+            /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsx("tr", { children: ["A", "I(A)", "\xACA", "I(\xACA)"].map((h) => /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "6px 14px", textAlign: "center", borderBottom: "1px solid #1e1e3a" }, children: h }, h)) }) }),
             /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => {
               const na = neg(a.id);
               const ne = getElem(na);
@@ -497,7 +497,7 @@ function App() {
               ] }, a.id);
             }) })
           ] }),
-          /* @__PURE__ */ jsx("div", { style: { color: "#4a4a7a", fontSize: 11, marginTop: 8 }, children: "\xAC\xACA = A\uFF08\u5024\u30EC\u30D9\u30EB\u30FB\u5BFE\u5408\uFF09" })
+          /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, marginTop: 8 }, children: "\xAC\xACA = A\uFF08\u5024\u30EC\u30D9\u30EB\u30FB\u5BFE\u5408\uFF09" })
         ] })
       ] }),
       tab === "conj" && /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -509,10 +509,10 @@ function App() {
           padding: "20px 16px",
           minWidth: 280
         }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
+          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
           /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
             /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("th", { style: { color: "#4a4a7a", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u2227" }),
+              /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u2227" }),
               L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
             ] }) }),
             /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => /* @__PURE__ */ jsxs("tr", { children: [
@@ -537,10 +537,10 @@ function App() {
           padding: "20px 16px",
           minWidth: 280
         }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
+          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
           /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
             /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("th", { style: { color: "#4a4a7a", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u2228" }),
+              /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u2228" }),
               L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
             ] }) }),
             /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => /* @__PURE__ */ jsxs("tr", { children: [
@@ -565,10 +565,10 @@ function App() {
           padding: "20px 16px",
           minWidth: 280
         }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
+          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
           /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
             /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("th", { style: { color: "#4a4a7a", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u21D2" }),
+              /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u21D2" }),
               L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
             ] }) }),
             /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => /* @__PURE__ */ jsxs("tr", { children: [
@@ -592,7 +592,7 @@ function App() {
         width: "100%",
         maxWidth: 700
       }, children: [
-        /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 20 }, children: "\u8AF8\u6CD5\u5247\u306E\u691C\u8A3C" }),
+        /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 20 }, children: "\u8AF8\u6CD5\u5247\u306E\u691C\u8A3C" }),
         /* @__PURE__ */ jsx(TautologyRow, { label: "\u6392\u4E2D\u5F8B A\u2228\xACA", fn: (a) => disj(a, neg(a)), expected: "T" }),
         /* @__PURE__ */ jsx(TautologyRow, { label: "\u77DB\u76FE\u5F8B A\u2227\xACA", fn: (a) => conj(a, neg(a)), expected: "F" }),
         /* @__PURE__ */ jsx(TautologyRow, { label: "\u4E8C\u91CD\u5426\u5B9A \xAC\xACA = A", fn: (a) => {
