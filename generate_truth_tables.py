@@ -32,7 +32,7 @@ TRUE  = UnitaryPhaseLogic(0.0)
 FALSE = UnitaryPhaseLogic(np.pi / 2)
 NOT_T = UnitaryPhaseLogic(np.pi)            # ¬T (-1, θ = π)
 NOT_F = UnitaryPhaseLogic(3 * np.pi / 2)   # ¬F (-i, θ = 3π/2)
-N     = UnitaryPhaseLogic(np.pi / 4)       # N  (e^{iπ/4}, θ = π/4)
+N     = UnitaryPhaseLogic(5 * np.pi / 6)   # N  (e^{i5π/6}, θ = 5π/6)
 
 INPUTS = [
     ("T",  TRUE),

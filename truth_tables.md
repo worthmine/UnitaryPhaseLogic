@@ -32,7 +32,7 @@
 | T | F | F | F |
 | T | ¬T | ¬T | — |
 | T | ¬F | ¬F | F |
-| T | N | N | T |
+| T | N | N | — |
 | F | T | F | F |
 | F | F | ¬T | — |
 | F | ¬T | ¬F | F |
@@ -42,17 +42,17 @@
 | ¬T | F | ¬F | F |
 | ¬T | ¬T | T | T |
 | ¬T | ¬F | F | F |
-| ¬T | N | N | — |
+| ¬T | N | N | T |
 | ¬F | T | ¬F | F |
 | ¬F | F | T | T |
 | ¬F | ¬T | F | F |
 | ¬F | ¬F | ¬T | — |
 | ¬F | N | N | T |
-| N | T | N | T |
+| N | T | N | — |
 | N | F | N | — |
-| N | ¬T | N | — |
+| N | ¬T | N | T |
 | N | ¬F | N | T |
-| N | N | F | F |
+| N | N | N | T |
 
 ---
 
@@ -69,7 +69,7 @@
 | F | F | F | F |
 | F | ¬T | ¬T | — |
 | F | ¬F | ¬F | F |
-| F | N | N | T |
+| F | N | N | — |
 | ¬T | T | F | F |
 | ¬T | F | ¬T | — |
 | ¬T | ¬T | ¬F | F |
@@ -79,12 +79,12 @@
 | ¬F | F | ¬F | F |
 | ¬F | ¬T | T | T |
 | ¬F | ¬F | F | F |
-| ¬F | N | N | — |
+| ¬F | N | N | T |
 | N | T | N | T |
-| N | F | N | T |
+| N | F | N | — |
 | N | ¬T | N | — |
-| N | ¬F | N | — |
-| N | N | T | T |
+| N | ¬F | N | T |
+| N | N | N | — |
 
 ---
 
@@ -96,7 +96,7 @@
 | T | F | F | F |
 | T | ¬T | ¬T | — |
 | T | ¬F | ¬F | F |
-| T | N | N | T |
+| T | N | N | — |
 | F | T | ¬F | F |
 | F | F | T | T |
 | F | ¬T | F | F |
@@ -106,14 +106,14 @@
 | ¬T | F | ¬F | F |
 | ¬T | ¬T | T | T |
 | ¬T | ¬F | F | F |
-| ¬T | N | N | — |
+| ¬T | N | N | T |
 | ¬F | T | F | F |
 | ¬F | F | ¬T | — |
 | ¬F | ¬T | ¬F | F |
 | ¬F | ¬F | T | T |
 | ¬F | N | N | — |
-| N | T | N | T |
+| N | T | N | — |
 | N | F | N | T |
-| N | ¬T | N | — |
+| N | ¬T | N | T |
 | N | ¬F | N | — |
 | N | N | T | T |
