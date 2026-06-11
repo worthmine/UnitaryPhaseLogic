@@ -1,0 +1,11 @@
+{
+  "name": "unitary-phase-logic",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:tsx": "tsx --test test_u1_logic_core.test.ts"
+  },
+  "devDependencies": {
+    "tsx": "4.22.4"
+  }
+}

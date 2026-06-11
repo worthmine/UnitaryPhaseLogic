@@ -1,51 +1,5 @@
 import { useState } from "react";
-
-const TAU = 2 * Math.PI;
-
-// L4 elements
-const L4 = [
-  { id: "+1", phase: 0,        label: "+1", iLabel: "T",  color: "#00E5FF" },
-  { id: "+i", phase: Math.PI/2, label: "+i", iLabel: "F",  color: "#FF4081" },
-  { id: "-1", phase: Math.PI,   label: "−1", iLabel: "T",  color: "#00E5FF" },
-  { id: "-i", phase: 3*Math.PI/2, label: "−i", iLabel: "F", color: "#FF4081" },
-];
-
-const getElem = (id) => L4.find(e => e.id === id);
-
-// Operations
-function phaseToId(ph) {
-  const p = ((ph % TAU) + TAU) % TAU;
-  if (Math.abs(p - 0) < 0.001 || Math.abs(p - TAU) < 0.001) return "+1";
-  if (Math.abs(p - Math.PI/2) < 0.001) return "+i";
-  if (Math.abs(p - Math.PI) < 0.001) return "-1";
-  if (Math.abs(p - 3*Math.PI/2) < 0.001) return "-i";
-  return null;
-}
-
-function neg(id) {
-  // ¬A = iA⁻¹  →  phase: π/2 - phase(A)
-  const a = getElem(id);
-  const ph = ((Math.PI/2 - a.phase) % TAU + TAU) % TAU;
-  return phaseToId(ph);
-}
-
-function conj(idA, idB) {
-  // A∧B = AB  →  phase sum
-  const a = getElem(idA), b = getElem(idB);
-  return phaseToId(a.phase + b.phase);
-}
-
-function disj(idA, idB) {
-  // A∨B = -iAB  →  phase sum - π/2
-  const a = getElem(idA), b = getElem(idB);
-  return phaseToId(a.phase + b.phase - Math.PI/2);
-}
-
-function impl(idA, idB) {
-  // A⇒B = BA⁻¹  →  phase(B) - phase(A)
-  const a = getElem(idA), b = getElem(idB);
-  return phaseToId(b.phase - a.phase);
-}
+import { L4, conj, disj, getElem, impl, neg } from "./u1_logic_core";
 
 // SVG helpers
 const R = 90;
