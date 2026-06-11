@@ -3,6 +3,12 @@
 A logical framework that represents propositions as 1×1 unitary matrices (complex numbers on the unit circle, `e^(iθ)`).
 Logical operations are defined as unitary transformations, extending classical two-valued logic into a richer phase-based structure.
 
+## Live Demo
+
+🌐 **[View Interactive Visualization](https://worthmine.github.io/UnitaryPhaseLogic/)**
+
+The interactive demo allows you to explore the Unitary Phase Logic operations visually on the complex plane.
+
 ## Value System
 
 | Label | Matrix value | Phase | cos(θ) | Classical mapping |
