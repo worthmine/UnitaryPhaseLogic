@@ -103,4 +103,4 @@ print(A.OR(A.NOT()))    # UnitaryLogic[θ=0.0°]   → T  (排中律)
 print(A.AND(A.NOT()))   # UnitaryLogic[θ=90.0°]  → F  (矛盾律)
 ```
 
-全演算子の真理値表は [`truth_table.md`](truth_table.md) を参照してください。
+全演算子の真理値表は [`truth_table.md`](truth_table.ja.md) を参照してください。
