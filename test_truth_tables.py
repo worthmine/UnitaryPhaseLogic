@@ -398,6 +398,108 @@ class TestTruthTableLabels(unittest.TestCase):
         """N ⇒ N = T  (A⇒A は常に T)"""
         self.assertEqual(_label(self.N.IMPLIES(self.N)), "T")
 
+    # ── EQAL ─────────────────────────────────────────────────
+
+    def test_eqal_tt(self):
+        """T ⇔ T = T"""
+        self.assertEqual(_label(self.T.EQAL(self.T)), "T")
+
+    def test_eqal_tf(self):
+        """T ⇔ F = T  (位相が相殺して T)"""
+        self.assertEqual(_label(self.T.EQAL(self.F)), "T")
+
+    def test_eqal_t_nt(self):
+        """T ⇔ ¬T = T"""
+        self.assertEqual(_label(self.T.EQAL(self.NT)), "T")
+
+    def test_eqal_t_nf(self):
+        """T ⇔ ¬F = T"""
+        self.assertEqual(_label(self.T.EQAL(self.NF)), "T")
+
+    def test_eqal_tn(self):
+        """T ⇔ N = T"""
+        self.assertEqual(_label(self.T.EQAL(self.N)), "T")
+
+    def test_eqal_ft(self):
+        """F ⇔ T = T"""
+        self.assertEqual(_label(self.F.EQAL(self.T)), "T")
+
+    def test_eqal_ff(self):
+        """F ⇔ F = T"""
+        self.assertEqual(_label(self.F.EQAL(self.F)), "T")
+
+    def test_eqal_f_nt(self):
+        """F ⇔ ¬T = T"""
+        self.assertEqual(_label(self.F.EQAL(self.NT)), "T")
+
+    def test_eqal_f_nf(self):
+        """F ⇔ ¬F = T"""
+        self.assertEqual(_label(self.F.EQAL(self.NF)), "T")
+
+    def test_eqal_fn(self):
+        """F ⇔ N = T"""
+        self.assertEqual(_label(self.F.EQAL(self.N)), "T")
+
+    def test_eqal_ntt(self):
+        """¬T ⇔ T = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.T)), "T")
+
+    def test_eqal_ntf(self):
+        """¬T ⇔ F = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.F)), "T")
+
+    def test_eqal_nt_nt(self):
+        """¬T ⇔ ¬T = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.NT)), "T")
+
+    def test_eqal_nt_nf(self):
+        """¬T ⇔ ¬F = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.NF)), "T")
+
+    def test_eqal_ntn(self):
+        """¬T ⇔ N = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.N)), "T")
+
+    def test_eqal_nft(self):
+        """¬F ⇔ T = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.T)), "T")
+
+    def test_eqal_nff(self):
+        """¬F ⇔ F = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.F)), "T")
+
+    def test_eqal_nf_nt(self):
+        """¬F ⇔ ¬T = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.NT)), "T")
+
+    def test_eqal_nf_nf(self):
+        """¬F ⇔ ¬F = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.NF)), "T")
+
+    def test_eqal_nfn(self):
+        """¬F ⇔ N = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.N)), "T")
+
+    def test_eqal_nt(self):
+        """N ⇔ T = T"""
+        self.assertEqual(_label(self.N.EQAL(self.T)), "T")
+
+    def test_eqal_nf(self):
+        """N ⇔ F = T"""
+        self.assertEqual(_label(self.N.EQAL(self.F)), "T")
+
+    def test_eqal_n_nt(self):
+        """N ⇔ ¬T = T"""
+        self.assertEqual(_label(self.N.EQAL(self.NT)), "T")
+
+    def test_eqal_n_nf(self):
+        """N ⇔ ¬F = T"""
+        self.assertEqual(_label(self.N.EQAL(self.NF)), "T")
+
+    def test_eqal_nn(self):
+        """N ⇔ N = T"""
+        self.assertEqual(_label(self.N.EQAL(self.N)), "T")
+
 
 class TestClassicalMapping(unittest.TestCase):
     """_classical() が各代表値を正しく写像することを検証する。"""
