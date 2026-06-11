@@ -5,10 +5,8 @@ const R = 90;
 const CX = 130, CY = 130;
 function polarToXY(phase, r = R) {
   return {
-    x: CX + r * Math.cos(phase),
-    // 実軸 → 右
-    y: CY - r * Math.sin(phase)
-    // 虚軸 → 上（SVG y軸反転補正）
+    x: CX + r * Math.cos(phase), // 実軸 → 右
+    y: CY - r * Math.sin(phase) // 虚軸 → 上（SVG y軸反転補正）
   };
 }
 function NodeDot({ elem, size = 10, opacity = 1, pulse = false }) {
