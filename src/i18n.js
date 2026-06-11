@@ -80,6 +80,11 @@ export const MESSAGES = {
   }
 };
 
+export function detectLang() {
+  if (typeof navigator !== "undefined" && !navigator.language?.startsWith("ja")) return "en";
+  return "ja";
+}
+
 export const LangContext = createContext("ja");
 
 export function useT() {

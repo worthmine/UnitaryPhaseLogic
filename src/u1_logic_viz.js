@@ -2,7 +2,7 @@
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { conj, disj, impl } from "./u1_logic_core";
-import { LANGS, LangContext, REPO_URL, useT } from "./i18n";
+import { LANGS, LangContext, REPO_URL, detectLang, useT } from "./i18n";
 import { Calculator } from "./components/Calculator";
 import { BinaryOpTab, NegDiagram, NegTruthTable } from "./components/operators";
 import { LawsPanel } from "./components/laws";
@@ -69,7 +69,7 @@ function Main({ lang, setLang }) {
 }
 
 function App() {
-  const [lang, setLang] = useState("ja");
+  const [lang, setLang] = useState(detectLang);
   return jsx(LangContext.Provider, { value: lang, children: jsx(Main, { lang, setLang }) });
 }
 
