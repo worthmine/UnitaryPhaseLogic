@@ -53,12 +53,10 @@ class UnitaryPhaseLogic:
 
     def EQAL(self, other):
         """
-        同値: A ⇔ B = B · A†
-        A から B への位相差。A と B が同じ位相（同じ論理値）のときのみ T を返します。
-        (A ⇒ B) ∧ (B ⇒ A) は位相が打ち消し合い常に T となる定理であり、
-        演算として意味を持たないため、含意の一方向として定義します。
+        同値: A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)
+        含意を両方向で組み合わせて、同値性を表現します。
         """
-        return self.IMPLIES(other)
+        return self.IMPLIES(other).AND(other.IMPLIES(self))
 
     def __eq__(self, other):
         """浮動小数点誤差を吸収して、2つのユニタリ状態の同値性を判定します。"""

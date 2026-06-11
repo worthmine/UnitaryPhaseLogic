@@ -405,99 +405,99 @@ class TestTruthTableLabels(unittest.TestCase):
         self.assertEqual(_label(self.T.EQAL(self.T)), "T")
 
     def test_eqal_tf(self):
-        """T ⇔ F = F"""
-        self.assertEqual(_label(self.T.EQAL(self.F)), "F")
+        """T ⇔ F = T  (位相が相殺して T)"""
+        self.assertEqual(_label(self.T.EQAL(self.F)), "T")
 
     def test_eqal_t_nt(self):
-        """T ⇔ ¬T = ¬T"""
-        self.assertEqual(_label(self.T.EQAL(self.NT)), "¬T")
+        """T ⇔ ¬T = T"""
+        self.assertEqual(_label(self.T.EQAL(self.NT)), "T")
 
     def test_eqal_t_nf(self):
-        """T ⇔ ¬F = ¬F"""
-        self.assertEqual(_label(self.T.EQAL(self.NF)), "¬F")
+        """T ⇔ ¬F = T"""
+        self.assertEqual(_label(self.T.EQAL(self.NF)), "T")
 
     def test_eqal_tn(self):
-        """T ⇔ N = N"""
-        self.assertEqual(_label(self.T.EQAL(self.N)), "N")
+        """T ⇔ N = T"""
+        self.assertEqual(_label(self.T.EQAL(self.N)), "T")
 
     def test_eqal_ft(self):
-        """F ⇔ T = ¬F"""
-        self.assertEqual(_label(self.F.EQAL(self.T)), "¬F")
+        """F ⇔ T = T"""
+        self.assertEqual(_label(self.F.EQAL(self.T)), "T")
 
     def test_eqal_ff(self):
         """F ⇔ F = T"""
         self.assertEqual(_label(self.F.EQAL(self.F)), "T")
 
     def test_eqal_f_nt(self):
-        """F ⇔ ¬T = F"""
-        self.assertEqual(_label(self.F.EQAL(self.NT)), "F")
+        """F ⇔ ¬T = T"""
+        self.assertEqual(_label(self.F.EQAL(self.NT)), "T")
 
     def test_eqal_f_nf(self):
-        """F ⇔ ¬F = ¬T"""
-        self.assertEqual(_label(self.F.EQAL(self.NF)), "¬T")
+        """F ⇔ ¬F = T"""
+        self.assertEqual(_label(self.F.EQAL(self.NF)), "T")
 
     def test_eqal_fn(self):
-        """F ⇔ N = N"""
-        self.assertEqual(_label(self.F.EQAL(self.N)), "N")
+        """F ⇔ N = T"""
+        self.assertEqual(_label(self.F.EQAL(self.N)), "T")
 
     def test_eqal_ntt(self):
-        """¬T ⇔ T = ¬T"""
-        self.assertEqual(_label(self.NT.EQAL(self.T)), "¬T")
+        """¬T ⇔ T = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.T)), "T")
 
     def test_eqal_ntf(self):
-        """¬T ⇔ F = ¬F"""
-        self.assertEqual(_label(self.NT.EQAL(self.F)), "¬F")
+        """¬T ⇔ F = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.F)), "T")
 
     def test_eqal_nt_nt(self):
         """¬T ⇔ ¬T = T"""
         self.assertEqual(_label(self.NT.EQAL(self.NT)), "T")
 
     def test_eqal_nt_nf(self):
-        """¬T ⇔ ¬F = F"""
-        self.assertEqual(_label(self.NT.EQAL(self.NF)), "F")
+        """¬T ⇔ ¬F = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.NF)), "T")
 
     def test_eqal_ntn(self):
-        """¬T ⇔ N = N"""
-        self.assertEqual(_label(self.NT.EQAL(self.N)), "N")
+        """¬T ⇔ N = T"""
+        self.assertEqual(_label(self.NT.EQAL(self.N)), "T")
 
     def test_eqal_nft(self):
-        """¬F ⇔ T = F"""
-        self.assertEqual(_label(self.NF.EQAL(self.T)), "F")
+        """¬F ⇔ T = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.T)), "T")
 
     def test_eqal_nff(self):
-        """¬F ⇔ F = ¬T"""
-        self.assertEqual(_label(self.NF.EQAL(self.F)), "¬T")
+        """¬F ⇔ F = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.F)), "T")
 
     def test_eqal_nf_nt(self):
-        """¬F ⇔ ¬T = ¬F"""
-        self.assertEqual(_label(self.NF.EQAL(self.NT)), "¬F")
+        """¬F ⇔ ¬T = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.NT)), "T")
 
     def test_eqal_nf_nf(self):
         """¬F ⇔ ¬F = T"""
         self.assertEqual(_label(self.NF.EQAL(self.NF)), "T")
 
     def test_eqal_nfn(self):
-        """¬F ⇔ N = N"""
-        self.assertEqual(_label(self.NF.EQAL(self.N)), "N")
+        """¬F ⇔ N = T"""
+        self.assertEqual(_label(self.NF.EQAL(self.N)), "T")
 
     def test_eqal_nt(self):
-        """N ⇔ T = N"""
-        self.assertEqual(_label(self.N.EQAL(self.T)), "N")
+        """N ⇔ T = T"""
+        self.assertEqual(_label(self.N.EQAL(self.T)), "T")
 
     def test_eqal_nf(self):
-        """N ⇔ F = N"""
-        self.assertEqual(_label(self.N.EQAL(self.F)), "N")
+        """N ⇔ F = T"""
+        self.assertEqual(_label(self.N.EQAL(self.F)), "T")
 
     def test_eqal_n_nt(self):
-        """N ⇔ ¬T = N"""
-        self.assertEqual(_label(self.N.EQAL(self.NT)), "N")
+        """N ⇔ ¬T = T"""
+        self.assertEqual(_label(self.N.EQAL(self.NT)), "T")
 
     def test_eqal_n_nf(self):
-        """N ⇔ ¬F = N"""
-        self.assertEqual(_label(self.N.EQAL(self.NF)), "N")
+        """N ⇔ ¬F = T"""
+        self.assertEqual(_label(self.N.EQAL(self.NF)), "T")
 
     def test_eqal_nn(self):
-        """N ⇔ N = T  (A⇔A は常に T)"""
+        """N ⇔ N = T"""
         self.assertEqual(_label(self.N.EQAL(self.N)), "T")
 
 

@@ -50,6 +50,11 @@ class TestUnitaryTheorems(unittest.TestCase):
         expected_shift = UnitaryPhaseLogic(matrix=-1j * B.U)
         self.assertEqual(bot.IMPLIES(B), expected_shift)
 
+    def test_contrapositive(self):
+        """定理7 [対偶律]: A ⇒ B = ¬B ⇒ ¬A が行列演算で成立。"""
+        A, B = self.A, self.B
+        self.assertEqual(A.IMPLIES(B), B.NOT().IMPLIES(A.NOT()))
+
 
 if __name__ == "__main__":
     unittest.main()
