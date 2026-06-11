@@ -22,4 +22,4 @@ jobs:
         run: pip install numpy
 
       - name: Run tests
-        run: python -m unittest test_UnitaryPhaseLogic -v
+        run: python -m unittest test_UnitaryPhaseLogic test_truth_tables -v
