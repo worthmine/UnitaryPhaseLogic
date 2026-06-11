@@ -29,7 +29,8 @@ The classical mapping uses `cos(θ)`: positive → T, zero → F, negative → o
 | AND   | A ∧ B = A · B    | Matrix (complex) multiplication — phase addition on the unit circle |
 | OR    | A ∨ B = −i·(A·B) | AND followed by a −90° rotation |
 | IMPLIES | A ⇒ B = B · A† | Phase difference from A to B |
-| EQAL  | A ⇔ B = (A⇒B) ∧ (B⇒A) | Mutual implication |
+
+> **Note**: A biconditional (EQAL) operator A ⇔ B = (A⇒B) ∧ (B⇒A) is intentionally **not** defined. Deriving equivalence this way produces a phase that is identically true for any two propositions A and B (A ⇔ B = (B·A†)·(A·B†) = B·B† = T), so it must not be defined as an operator.
 
 ## Logical Consequences
 
@@ -64,12 +65,12 @@ The following identities are proven for arbitrary propositions A and B represent
 |-------------|----------|---------|
 | **Reflexivity of implication** | A ⇒ A = T | Every proposition implies itself |
 | **Unitarity identity** | A · A† = T | Every proposition composed with its own conjugate collapses to True |
-| **Universal biconditional** | A ⇔ B = T for all A, B | Every pair of propositions is biconditionally equivalent (phase cancellation) |
+| **Universal biconditional** | A ⇔ B = T for all A, B | Why an EQAL operator is not defined (phase cancellation) |
 
 **Proof of universal biconditional**:
 A ⇔ B = (B·A†)·(A·B†) = B·(A†·A)·B† = B·T·B† = B·B† = T ✓
 
-This is a fundamental departure from classical logic: the `EQAL` operator always returns T regardless of the operands. It measures structural biconditional equivalence within the unitary framework, not value equality.
+Because mutual implication is identically true for every pair of propositions, deriving equivalence this way carries no information. For this reason an `EQAL` operator is deliberately not defined in UPL.
 
 ### Algebraic structure
 

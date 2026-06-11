@@ -51,12 +51,14 @@ class UnitaryPhaseLogic:
         """
         return UnitaryPhaseLogic(matrix=other.U @ self.dagger)
 
-    def EQAL(self, other):
-        """
-        同値: A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)
-        含意を両方向で組み合わせて、同値性を表現します。
-        """
-        return self.IMPLIES(other).AND(other.IMPLIES(self))
+    # 注意: 同値の導出は任意の二つの命題 A, B が恒真になる位相を作ってしまう
+    # (A ⇔ B = (B·A†)·(A·B†) = B·B† = T) ため、演算子として定義すべきではない。
+    # def EQAL(self, other):
+    #     """
+    #     同値: A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)
+    #     含意を両方向で組み合わせて、同値性を表現します。
+    #     """
+    #     return self.IMPLIES(other).AND(other.IMPLIES(self))
 
     def __eq__(self, other):
         """浮動小数点誤差を吸収して、2つのユニタリ状態の同値性を判定します。"""
