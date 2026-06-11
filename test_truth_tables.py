@@ -191,7 +191,7 @@ class TestTruthTableLabels(unittest.TestCase):
         self.assertEqual(_label(self.N.AND(self.NF)), "N")
 
     def test_and_nn(self):
-        """N ∧ N = F  (θ=π/4 の場合 e^{iπ/2}=i)"""
+        """N ∧ N = F  (θ=π/4 の場合: e^{iπ/4}·e^{iπ/4} = e^{iπ/2} = i → F)"""
         self.assertEqual(_label(self.N.AND(self.N)), "F")
 
     # ── OR ───────────────────────────────────────────────────
@@ -293,7 +293,7 @@ class TestTruthTableLabels(unittest.TestCase):
         self.assertEqual(_label(self.N.OR(self.NF)), "N")
 
     def test_or_nn(self):
-        """N ∨ N = T  (θ=π/4 の場合 -i·e^{iπ/2}=1)"""
+        """N ∨ N = T  (θ=π/4 の場合: AND=i, -i·i = -i²= 1 → T)"""
         self.assertEqual(_label(self.N.OR(self.N)), "T")
 
     # ── IMPLIES ──────────────────────────────────────────────

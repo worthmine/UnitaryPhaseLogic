@@ -60,7 +60,7 @@ def _phase_rad(upl: UnitaryPhaseLogic) -> float:
 def _label(upl: UnitaryPhaseLogic) -> str:
     """
     行列値を代表的な 4 値と np.isclose で比較しラベルを返す。
-    どれにも一致しない場合は N (θ=<弧度>) を返す。
+    どれにも一致しない場合は N (Neither: 非正準位相すべてを表す) を返す。
     """
     val = complex(upl.U[0, 0])
     for canonical_val, name in _CANONICAL:
