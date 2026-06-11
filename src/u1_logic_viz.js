@@ -139,10 +139,10 @@ function TautologyRow({ label, fn, expected }) {
     jsx("div", { className: `upl-law-status ${allOk ? "ok" : "ng"}`, children: allOk ? "✓ 恒成立" : "✗" })
   ] });
 }
-function LawRow({ label, fn, expect }) {
+function LawRow({ label, fn, expectFn }) {
   const results = L4.map((a) => {
     const r = fn(a.id);
-    return { a, r, ok: r === expect(a.id) };
+    return { a, r, ok: r === expectFn(a.id) };
   });
   const allOk = results.every((r) => r.ok);
   return jsxs("div", { className: "upl-law-row", children: [
@@ -249,7 +249,7 @@ function Calculator() {
     jsx("div", { className: "upl-note", children: op.label })
   ] });
 }
-function TruthTable({ opSym, opFn, classical }) {
+function TruthTable({ opSym, opFn, classicalFn }) {
   return jsxs("div", { className: "upl-card", children: [
     jsx("div", { className: "upl-card-title upl-card-title--mb12", children: "L₄ 全真理表" }),
     jsxs("table", { className: "upl-table", children: [
@@ -262,7 +262,7 @@ function TruthTable({ opSym, opFn, classical }) {
         L4.map((b) => {
           const r = opFn(a.id, b.id);
           const re = getElem(r);
-          const classicalR = classical(a, b);
+          const classicalR = classicalFn(a, b);
           const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
           return jsx("td", { style: { color: cellColor }, children: r }, b.id);
         })
@@ -314,15 +314,15 @@ function App() {
       ] }),
       tab === "conj" && jsxs(Fragment, { children: [
         jsx(BinaryDiagram, { op: conj, opLabel: "∧", title: "連言 A∧B = AB", note: "位相の和 = 複素乗法" }),
-        jsx(TruthTable, { opSym: "∧", opFn: conj, classical: (a, b) => a.iLabel === "T" && b.iLabel === "T" ? "T" : "F" })
+        jsx(TruthTable, { opSym: "∧", opFn: conj, classicalFn: (a, b) => a.iLabel === "T" && b.iLabel === "T" ? "T" : "F" })
       ] }),
       tab === "disj" && jsxs(Fragment, { children: [
         jsx(BinaryDiagram, { op: disj, opLabel: "∨", title: "選言 A∨B = −iAB", note: "ド・モルガン定義" }),
-        jsx(TruthTable, { opSym: "∨", opFn: disj, classical: (a, b) => a.iLabel === "T" || b.iLabel === "T" ? "T" : "F" })
+        jsx(TruthTable, { opSym: "∨", opFn: disj, classicalFn: (a, b) => a.iLabel === "T" || b.iLabel === "T" ? "T" : "F" })
       ] }),
       tab === "impl" && jsxs(Fragment, { children: [
         jsx(BinaryDiagram, { op: impl, opLabel: "⇒", title: "含意 A⇒B = BA⁻¹", note: "論理商 = 位相差" }),
-        jsx(TruthTable, { opSym: "⇒", opFn: impl, classical: (a, b) => a.iLabel === "T" && b.iLabel === "F" ? "F" : "T" })
+        jsx(TruthTable, { opSym: "⇒", opFn: impl, classicalFn: (a, b) => a.iLabel === "T" && b.iLabel === "F" ? "F" : "T" })
       ] }),
       tab === "laws" && jsxs("div", { className: "upl-card upl-card--laws", children: [
         jsx("div", { className: "upl-card-title upl-card-title--mb20", children: "諸法則の検証" }),
@@ -332,9 +332,9 @@ function App() {
           const r = neg(neg(a));
           return r === a ? "+1" : "+i";
         }, expected: "T" }),
-        jsx(LawRow, { label: "含意の反射律 A⇒A = T", fn: (a) => impl(a, a), expect: () => "+1" }),
-        jsx(LawRow, { label: "背理法 ¬A⇒⊥ = A", fn: (a) => impl(neg(a), "+i"), expect: (a) => a }),
-        jsx(LawRow, { label: "爆発抑制 ⊥⇒B = −iB", fn: (b) => impl("+i", b), expect: (b) => conj("-i", b) }),
+        jsx(LawRow, { label: "含意の反射律 A⇒A = T", fn: (a) => impl(a, a), expectFn: () => "+1" }),
+        jsx(LawRow, { label: "背理法 ¬A⇒⊥ = A", fn: (a) => impl(neg(a), "+i"), expectFn: (a) => a }),
+        jsx(LawRow, { label: "爆発抑制 ⊥⇒B = −iB", fn: (b) => impl("+i", b), expectFn: (b) => conj("-i", b) }),
         jsx(BinaryLawTable, { label: "ド・モルガン第一法則　¬(A∧B) = ¬A∨¬B", lhs: (a, b) => neg(conj(a, b)), rhs: (a, b) => disj(neg(a), neg(b)) }),
         jsx(BinaryLawTable, { label: "ド・モルガン第二法則　¬(A∨B) = ¬A∧¬B", lhs: (a, b) => neg(disj(a, b)), rhs: (a, b) => conj(neg(a), neg(b)) }),
         jsx(BinaryLawTable, { label: "対偶律　(A⇒B) = (¬B⇒¬A)", lhs: (a, b) => impl(a, b), rhs: (a, b) => impl(neg(b), neg(a)) }),

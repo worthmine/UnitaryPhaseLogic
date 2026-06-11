@@ -9,6 +9,8 @@
   --upl-line-strong: #3a3a6a;
   --upl-text: #ffffff;
   --upl-text-bright: #e0e0ff;
+  /* Text brightness hierarchy (brightest → dimmest):
+     text > text-bright > text-title > text-dim > text-axis */
   --upl-text-title: #c8c8e8;
   --upl-text-dim: #9a9ad0;
   --upl-text-axis: #6a6aa8;
