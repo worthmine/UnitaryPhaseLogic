@@ -15,8 +15,8 @@ The interactive demo allows you to explore the Unitary Phase Logic operations vi
 |-------|-------------|-------|--------|-------------------|
 | T  (True)       |  1 | θ = 0    | > 0 | T |
 | F  (False)      |  i | θ = π/2  | = 0 | F |
-| ¬T (Anti-True)  | -1 | θ = π    | < 0 | — (outside classical domain) |
-| ¬F (Anti-False) | -i | θ = 3π/2 | = 0 | F |
+| T̃ (Anti-True)  | -1 | θ = π    | < 0 | — (outside classical domain) |
+| F̃ (Anti-False) | -i | θ = 3π/2 | = 0 | F |
 | N  (Neither)    | any other | any other θ | — | — |
 
 The classical mapping uses `cos(θ)`: positive → T, zero → F, negative → outside the classical domain.
@@ -74,12 +74,12 @@ Because mutual implication is identically true for every pair of propositions, d
 
 ### Algebraic structure
 
-The four canonical values {T, F, ¬T, ¬F} = {1, i, −1, −i} form the **cyclic group Z₄** under AND (complex multiplication). The NOT operator acts as a 90° rotation combined with conjugation:
+The four canonical values {T, F, T̃, F̃} = {1, i, −1, −i} form the **cyclic group Z₄** under AND (complex multiplication). The NOT operator acts as a 90° rotation combined with conjugation:
 
 ```
 NOT cycle:  T → F → T   (order 2)
-            ¬T → ¬F → ¬T   (order 2)
-AND cycle:  T → F → ¬T → ¬F → T   (order 4)
+            T̃ → F̃ → T̃   (order 2)
+AND cycle:  T → F → T̃ → F̃ → T   (order 4)
 ```
 
 N (Neither) — any phase not in {0, π/2, π, 3π/2} — is **absorbing** under all binary operators: if either operand is N, the result is N.
@@ -90,9 +90,9 @@ The following cases produce results that differ from classical two-valued logic 
 
 | Operation | UPL result | Classical expectation | Reason |
 |-----------|-----------|-----------------------|--------|
-| F ∧ F     | ¬T        | F | Phase addition: π/2 + π/2 = π |
-| T ∨ T     | ¬F        | T | −90° rotation after AND: 0 − π/2 = −π/2 |
-| F ⇒ T     | ¬F        | T | Vacuous truth does not hold in UPL |
+| F ∧ F     | T̃        | F | Phase addition: π/2 + π/2 = π |
+| T ∨ T     | F̃        | T | −90° rotation after AND: 0 − π/2 = −π/2 |
+| F ⇒ T     | F̃        | T | Vacuous truth does not hold in UPL |
 
 These divergences are by design. UPL tracks exact phase rather than projecting to binary truth, so the classical mapping produces warnings (not errors) for these edge cases.
 
