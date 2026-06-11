@@ -1,6 +1,7 @@
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { L4, conj, disj, getElem, impl, neg } from "./u1_logic_core";
+import "./u1_logic_viz.css";
 const R = 90;
 const CX = 130, CY = 130;
 function polarToXY(phase, r = R) {
@@ -11,22 +12,12 @@ function polarToXY(phase, r = R) {
 }
 function NodeDot({ elem, size = 10, opacity = 1, pulse = false }) {
   const { x, y } = polarToXY(elem.phase);
-  return /* @__PURE__ */ jsxs("g", { children: [
-    pulse && /* @__PURE__ */ jsxs("circle", { cx: x, cy: y, r: size + 6, fill: elem.color, opacity: 0.2, children: [
-      /* @__PURE__ */ jsx("animate", { attributeName: "r", values: `${size + 4};${size + 12};${size + 4}`, dur: "1.5s", repeatCount: "indefinite" }),
-      /* @__PURE__ */ jsx("animate", { attributeName: "opacity", values: "0.3;0;0.3", dur: "1.5s", repeatCount: "indefinite" })
+  return jsxs("g", { children: [
+    pulse && jsxs("circle", { cx: x, cy: y, r: size + 6, fill: elem.color, opacity: 0.2, children: [
+      jsx("animate", { attributeName: "r", values: `${size + 4};${size + 12};${size + 4}`, dur: "1.5s", repeatCount: "indefinite" }),
+      jsx("animate", { attributeName: "opacity", values: "0.3;0;0.3", dur: "1.5s", repeatCount: "indefinite" })
     ] }),
-    /* @__PURE__ */ jsx(
-      "circle",
-      {
-        cx: x,
-        cy: y,
-        r: size,
-        fill: elem.color,
-        opacity,
-        style: { filter: `drop-shadow(0 0 6px ${elem.color})` }
-      }
-    )
+    jsx("circle", { cx: x, cy: y, r: size, fill: elem.color, opacity, style: { filter: `drop-shadow(0 0 6px ${elem.color})` } })
   ] });
 }
 function Arrow({ from, to, color, dashed = false, curved = false }) {
@@ -40,191 +31,99 @@ function Arrow({ from, to, color, dashed = false, curved = false }) {
   } else {
     d = `M ${f.x} ${f.y} L ${t.x} ${t.y}`;
   }
-  return /* @__PURE__ */ jsxs("g", { children: [
-    /* @__PURE__ */ jsx("defs", { children: /* @__PURE__ */ jsx("marker", { id, markerWidth: "8", markerHeight: "8", refX: "6", refY: "3", orient: "auto", children: /* @__PURE__ */ jsx("path", { d: "M0,0 L0,6 L8,3 z", fill: color }) }) }),
-    /* @__PURE__ */ jsx(
-      "path",
-      {
-        d,
-        stroke: color,
-        strokeWidth: "2.5",
-        fill: "none",
-        strokeDasharray: dashed ? "5,4" : void 0,
-        markerEnd: `url(#${id})`,
-        style: { filter: `drop-shadow(0 0 3px ${color})` }
-      }
-    )
-  ] });
-}
-function CircleDiagram({ title, children, note }) {
-  return /* @__PURE__ */ jsxs("div", { style: {
-    background: "#0d0d1a",
-    border: "1px solid #1e1e3a",
-    borderRadius: 16,
-    padding: "20px 16px 14px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 8,
-    minWidth: 280
-  }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
-    /* @__PURE__ */ jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
-      /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("circle", { cx: CX, cy: CY, r: R, fill: "none", stroke: "#1e1e3a", strokeWidth: 1.5 }),
-      /* @__PURE__ */ jsx("text", { x: CX + R + 8, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+1 (T)" }),
-      /* @__PURE__ */ jsx("text", { x: CX + 4, y: CY - R - 8, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+i (F)" }),
-      /* @__PURE__ */ jsx("text", { x: CX - R - 48, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u22121 (T)" }),
-      /* @__PURE__ */ jsx("text", { x: CX - 18, y: CY + R + 16, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u2212i (F)" }),
-      children
-    ] }),
-    note && /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
-  ] });
-}
-function NegDiagram() {
-  return /* @__PURE__ */ jsxs(CircleDiagram, { title: "\xACA = iA\u207B\xB9", note: "\xAC\xACA = A\uFF08\u5024\u30EC\u30D9\u30EB\u5BFE\u5408\uFF09\u3000\u03B8(\xACA) = \u03C0/2 \u2212 \u03B8(A)", children: [
-    L4.map((a) => {
-      const nb = getElem(neg(a.id));
-      return /* @__PURE__ */ jsx(Arrow, { from: a, to: nb, color: a.color }, a.id);
-    }),
-    L4.map((a) => /* @__PURE__ */ jsx(NodeDot, { elem: a, pulse: true }, a.id)),
-    L4.map((a) => {
-      const { x, y } = polarToXY(a.phase, R + 20);
-      return /* @__PURE__ */ jsx("text", { x, y, fill: a.color, fontSize: 12, fontFamily: "monospace", textAnchor: "middle", dominantBaseline: "middle", children: a.label }, a.id);
+  return jsxs("g", { children: [
+    jsx("defs", { children: jsx("marker", { id, markerWidth: "8", markerHeight: "8", refX: "6", refY: "3", orient: "auto", children: jsx("path", { d: "M0,0 L0,6 L8,3 z", fill: color }) }) }),
+    jsx("path", {
+      d,
+      stroke: color,
+      strokeWidth: "2.5",
+      fill: "none",
+      strokeDasharray: dashed ? "5,4" : void 0,
+      markerEnd: `url(#${id})`,
+      style: { filter: `drop-shadow(0 0 3px ${color})` }
     })
   ] });
 }
-function BinaryDiagram({ op, opLabel, title, note, color }) {
+function DiagramGrid() {
+  return jsxs(Fragment, { children: [
+    jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, className: "upl-grid-line" }),
+    jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, className: "upl-grid-line" }),
+    jsx("circle", { cx: CX, cy: CY, r: R, className: "upl-grid-circle" })
+  ] });
+}
+function ElemLabels() {
+  return L4.map((e) => {
+    const { x, y } = polarToXY(e.phase, R + 20);
+    return jsx("text", { x, y, fill: e.color, className: "upl-elem-text", children: e.label }, e.id);
+  });
+}
+function CircleDiagram({ title, children, note }) {
+  return jsxs("div", { className: "upl-card upl-card--center", children: [
+    jsx("div", { className: "upl-card-title", children: title }),
+    jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
+      jsx(DiagramGrid, {}),
+      jsx("text", { x: CX + R + 8, y: CY + 4, className: "upl-axis-text", children: "+1 (T)" }),
+      jsx("text", { x: CX + 4, y: CY - R - 8, className: "upl-axis-text", children: "+i (F)" }),
+      jsx("text", { x: CX - R - 48, y: CY + 4, className: "upl-axis-text", children: "−1 (T)" }),
+      jsx("text", { x: CX - 18, y: CY + R + 16, className: "upl-axis-text", children: "−i (F)" }),
+      children
+    ] }),
+    note && jsx("div", { className: "upl-note", children: note })
+  ] });
+}
+function NegDiagram() {
+  return jsxs(CircleDiagram, { title: "¬A = iA⁻¹", note: "¬¬A = A（値レベル対合）　θ(¬A) = π/2 − θ(A)", children: [
+    L4.map((a) => {
+      const nb = getElem(neg(a.id));
+      return jsx(Arrow, { from: a, to: nb, color: a.color }, a.id);
+    }),
+    L4.map((a) => jsx(NodeDot, { elem: a, pulse: true }, a.id)),
+    jsx(ElemLabels, {})
+  ] });
+}
+function BinaryDiagram({ op, opLabel, title, note }) {
   const [selA, setSelA] = useState("+1");
   const [selB, setSelB] = useState("+i");
   const result = op(selA, selB);
   const resElem = getElem(result);
   const aElem = getElem(selA);
   const bElem = getElem(selB);
-  return /* @__PURE__ */ jsxs("div", { style: {
-    background: "#0d0d1a",
-    border: "1px solid #1e1e3a",
-    borderRadius: 16,
-    padding: "20px 16px 14px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 8,
-    minWidth: 280
-  }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 16, alignItems: "center" }, children: [["A", selA, setSelA], ["B", selB, setSelB]].map(([lbl, val, setter]) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }, children: [
-      "            ",
-      /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace" }, children: lbl }),
-      /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 4 }, children: L4.map((e) => /* @__PURE__ */ jsx("button", { onClick: () => setter(e.id), style: {
+  return jsxs("div", { className: "upl-card upl-card--center", children: [
+    jsx("div", { className: "upl-card-title", children: title }),
+    jsx("div", { className: "upl-picker-pair", children: [["A", selA, setSelA], ["B", selB, setSelB]].map(([lbl, val, setter]) => jsxs("div", { className: "upl-picker upl-picker--tight", children: [
+      jsx("span", { className: "upl-picker-label upl-picker-label--sm", children: lbl }),
+      jsx("div", { className: "upl-btn-row upl-btn-row--tight", children: L4.map((e) => jsx("button", { onClick: () => setter(e.id), className: "upl-val-btn upl-val-btn--sm", style: {
         background: val === e.id ? e.color : "#11112a",
         color: val === e.id ? "#000" : e.color,
-        border: `1px solid ${e.color}`,
-        borderRadius: 6,
-        padding: "3px 7px",
-        fontSize: 11,
-        fontFamily: "monospace",
-        cursor: "pointer",
-        transition: "all 0.15s"
+        border: `1px solid ${e.color}`
       }, children: e.label }, e.id)) })
     ] }, lbl)) }),
-    /* @__PURE__ */ jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
-      /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("circle", { cx: CX, cy: CY, r: R, fill: "none", stroke: "#1e1e3a", strokeWidth: 1.5 }),
-      /* @__PURE__ */ jsx("text", { x: CX + R + 8, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+1" }),
-      /* @__PURE__ */ jsx("text", { x: CX + 4, y: CY - R - 8, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "+i" }),
-      /* @__PURE__ */ jsx("text", { x: CX - R - 28, y: CY + 4, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u22121" }),
-      /* @__PURE__ */ jsx("text", { x: CX - 18, y: CY + R + 16, fill: "#6a6aa8", fontSize: 11, fontFamily: "monospace", children: "\u2212i" }),
+    jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
+      jsx(DiagramGrid, {}),
+      jsx("text", { x: CX + R + 8, y: CY + 4, className: "upl-axis-text", children: "+1" }),
+      jsx("text", { x: CX + 4, y: CY - R - 8, className: "upl-axis-text", children: "+i" }),
+      jsx("text", { x: CX - R - 28, y: CY + 4, className: "upl-axis-text", children: "−1" }),
+      jsx("text", { x: CX - 18, y: CY + R + 16, className: "upl-axis-text", children: "−i" }),
       L4.map((e) => {
         const { x, y } = polarToXY(e.phase);
-        return /* @__PURE__ */ jsx("circle", { cx: x, cy: y, r: 7, fill: "#11112a", stroke: e.color, strokeWidth: 1, opacity: 0.4 }, e.id);
+        return jsx("circle", { cx: x, cy: y, r: 7, fill: "#11112a", stroke: e.color, strokeWidth: 1, opacity: 0.4 }, e.id);
       }),
-      /* @__PURE__ */ jsx(Arrow, { from: aElem, to: resElem, color: "#00E5FF", curved: selA !== result }),
-      selB !== selA && /* @__PURE__ */ jsx(Arrow, { from: bElem, to: resElem, color: "#FF4081", curved: true, dashed: true }),
-      /* @__PURE__ */ jsx(NodeDot, { elem: aElem, size: 9 }),
-      selB !== selA && /* @__PURE__ */ jsx(NodeDot, { elem: bElem, size: 9 }),
-      /* @__PURE__ */ jsx(NodeDot, { elem: resElem, size: 11, pulse: true }),
-      L4.map((e) => {
-        const { x, y } = polarToXY(e.phase, R + 20);
-        return /* @__PURE__ */ jsx("text", { x, y, fill: e.color, fontSize: 12, fontFamily: "monospace", textAnchor: "middle", dominantBaseline: "middle", children: e.label }, e.id);
-      })
+      jsx(Arrow, { from: aElem, to: resElem, color: "#00E5FF", curved: selA !== result }),
+      selB !== selA && jsx(Arrow, { from: bElem, to: resElem, color: "#FF4081", curved: true, dashed: true }),
+      jsx(NodeDot, { elem: aElem, size: 9 }),
+      selB !== selA && jsx(NodeDot, { elem: bElem, size: 9 }),
+      jsx(NodeDot, { elem: resElem, size: 11, pulse: true }),
+      jsx(ElemLabels, {})
     ] }),
-    /* @__PURE__ */ jsxs("div", { style: { fontFamily: "monospace", fontSize: 14, color: "#ffffff", letterSpacing: "0.05em" }, children: [
-      /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA }),
-      /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0" }, children: [
-        " ",
-        opLabel,
-        " "
-      ] }),
-      /* @__PURE__ */ jsx("span", { style: { color: bElem.color }, children: selB }),
-      /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0" }, children: " = " }),
-      /* @__PURE__ */ jsx("span", { style: { color: resElem.color, fontWeight: "bold" }, children: result }),
-      /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0" }, children: [
-        " [",
-        resElem.iLabel,
-        "]"
-      ] })
+    jsxs("div", { className: "upl-result", children: [
+      jsx("span", { style: { color: aElem.color }, children: selA }),
+      jsxs("span", { className: "upl-dim", children: [" ", opLabel, " "] }),
+      jsx("span", { style: { color: bElem.color }, children: selB }),
+      jsx("span", { className: "upl-dim", children: " = " }),
+      jsx("span", { style: { color: resElem.color, fontWeight: "bold" }, children: result }),
+      jsxs("span", { className: "upl-dim", children: [" [", resElem.iLabel, "]"] })
     ] }),
-    note && /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
-  ] });
-}
-function LawDiagram({ law, title, note }) {
-  const results = L4.map((a) => {
-    const lhs = law.lhs(a.id);
-    const rhs = law.rhs(a.id);
-    return { a, lhs, rhs, ok: lhs === rhs };
-  });
-  return /* @__PURE__ */ jsxs("div", { style: {
-    background: "#0d0d1a",
-    border: "1px solid #1e1e3a",
-    borderRadius: 16,
-    padding: "20px 16px 14px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 8,
-    minWidth: 280
-  }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: title }),
-    /* @__PURE__ */ jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
-      /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("circle", { cx: CX, cy: CY, r: R, fill: "none", stroke: "#1e1e3a", strokeWidth: 1.5 }),
-      results.map(({ a, lhs, rhs, ok }) => {
-        const le = getElem(lhs);
-        const re = getElem(rhs);
-        return /* @__PURE__ */ jsxs("g", { children: [
-          /* @__PURE__ */ jsx(NodeDot, { elem: a, size: 8, opacity: 0.5 }),
-          /* @__PURE__ */ jsx(Arrow, { from: a, to: le, color: ok ? "#00ff88" : "#ff4444" }),
-          !ok && /* @__PURE__ */ jsx(Arrow, { from: a, to: re, color: "#ff4444", dashed: true })
-        ] }, a.id);
-      }),
-      L4.map((e) => {
-        const { x, y } = polarToXY(e.phase, R + 20);
-        return /* @__PURE__ */ jsx("text", { x, y, fill: e.color, fontSize: 12, fontFamily: "monospace", textAnchor: "middle", dominantBaseline: "middle", children: e.label }, e.id);
-      })
-    ] }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }, children: results.map(({ a, lhs, rhs, ok }) => /* @__PURE__ */ jsxs("div", { style: {
-      fontFamily: "monospace",
-      fontSize: 11,
-      color: ok ? "#00ff88" : "#ff4444",
-      background: ok ? "#001a0d" : "#1a0000",
-      border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
-      borderRadius: 6,
-      padding: "3px 8px"
-    }, children: [
-      "A=",
-      a.label,
-      ": ",
-      lhs,
-      " ",
-      ok ? "=" : "\u2260",
-      " ",
-      rhs
-    ] }, a.id)) }),
-    note && /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center", maxWidth: 240 }, children: note })
+    note && jsx("div", { className: "upl-note", children: note })
   ] });
 }
 function TautologyRow({ label, fn, expected }) {
@@ -234,33 +133,10 @@ function TautologyRow({ label, fn, expected }) {
     return { a, r, re, ok: re.iLabel === expected };
   });
   const allOk = results.every((r) => r.ok);
-  return /* @__PURE__ */ jsxs("div", { style: {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    padding: "8px 0",
-    borderBottom: "1px solid #1e1e3a"
-  }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontFamily: "monospace", fontSize: 13, width: 160 }, children: label }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: results.map(({ a, r, re, ok }) => /* @__PURE__ */ jsxs("div", { style: {
-      fontFamily: "monospace",
-      fontSize: 11,
-      color: ok ? "#00ff88" : "#ff4444",
-      background: ok ? "#001a0d" : "#1a0000",
-      border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
-      borderRadius: 6,
-      padding: "3px 8px"
-    }, children: [
-      a.label,
-      "\u2192",
-      r
-    ] }, a.id)) }),
-    /* @__PURE__ */ jsx("div", { style: {
-      marginLeft: "auto",
-      fontFamily: "monospace",
-      fontSize: 12,
-      color: allOk ? "#00ff88" : "#ff4444"
-    }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
+  return jsxs("div", { className: "upl-law-row", children: [
+    jsx("div", { className: "upl-law-label", children: label }),
+    jsx("div", { className: "upl-chips", children: results.map(({ a, r, ok }) => jsxs("div", { className: `upl-chip ${ok ? "ok" : "ng"}`, children: [a.label, "→", r] }, a.id)) }),
+    jsx("div", { className: `upl-law-status ${allOk ? "ok" : "ng"}`, children: allOk ? "✓ 恒成立" : "✗" })
   ] });
 }
 function LawRow({ label, fn, expect }) {
@@ -269,33 +145,10 @@ function LawRow({ label, fn, expect }) {
     return { a, r, ok: r === expect(a.id) };
   });
   const allOk = results.every((r) => r.ok);
-  return /* @__PURE__ */ jsxs("div", { style: {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    padding: "8px 0",
-    borderBottom: "1px solid #1e1e3a"
-  }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontFamily: "monospace", fontSize: 13, width: 160 }, children: label }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: results.map(({ a, r, ok }) => /* @__PURE__ */ jsxs("div", { style: {
-      fontFamily: "monospace",
-      fontSize: 11,
-      color: ok ? "#00ff88" : "#ff4444",
-      background: ok ? "#001a0d" : "#1a0000",
-      border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
-      borderRadius: 6,
-      padding: "3px 8px"
-    }, children: [
-      a.label,
-      "\u2192",
-      r
-    ] }, a.id)) }),
-    /* @__PURE__ */ jsx("div", { style: {
-      marginLeft: "auto",
-      fontFamily: "monospace",
-      fontSize: 12,
-      color: allOk ? "#00ff88" : "#ff4444"
-    }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
+  return jsxs("div", { className: "upl-law-row", children: [
+    jsx("div", { className: "upl-law-label", children: label }),
+    jsx("div", { className: "upl-chips", children: results.map(({ a, r, ok }) => jsxs("div", { className: `upl-chip ${ok ? "ok" : "ng"}`, children: [a.label, "→", r] }, a.id)) }),
+    jsx("div", { className: `upl-law-status ${allOk ? "ok" : "ng"}`, children: allOk ? "✓ 恒成立" : "✗" })
   ] });
 }
 function BinaryLawTable({ label, lhs, rhs }) {
@@ -305,55 +158,42 @@ function BinaryLawTable({ label, lhs, rhs }) {
     return { l, r, ok: l === r };
   }));
   const allOk = results.every((row) => row.every((c) => c.ok));
-  return /* @__PURE__ */ jsxs("div", { style: { marginTop: 20 }, children: [
-    /* @__PURE__ */ jsxs("div", { style: { marginBottom: 10, color: "#9a9ad0", fontSize: 11, display: "flex", alignItems: "center", gap: 10 }, children: [
-      /* @__PURE__ */ jsx("span", { children: label }),
-      /* @__PURE__ */ jsx("span", { style: { color: allOk ? "#00ff88" : "#ff4444", fontSize: 12 }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
+  return jsxs("div", { className: "upl-law-table-block", children: [
+    jsxs("div", { className: "upl-law-table-caption", children: [
+      jsx("span", { children: label }),
+      jsx("span", { className: `upl-status ${allOk ? "ok" : "ng"}`, children: allOk ? "✓ 恒成立" : "✗" })
     ] }),
-    /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
-      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a", borderRight: "1px solid #1e1e3a" }, children: "A \\ B" }),
-        L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
+    jsxs("table", { className: "upl-table upl-law-table", children: [
+      jsx("thead", { children: jsxs("tr", { children: [
+        jsx("th", { className: "upl-corner upl-row-head", children: "A \\ B" }),
+        L4.map((e) => jsx("th", { style: { color: e.color }, children: e.label }, e.id))
       ] }) }),
-      /* @__PURE__ */ jsx("tbody", { children: L4.map((a, i) => /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("td", { style: { color: a.color, padding: "4px 10px", textAlign: "center", borderRight: "1px solid #1e1e3a" }, children: a.label }),
+      jsx("tbody", { children: L4.map((a, i) => jsxs("tr", { children: [
+        jsx("td", { className: "upl-row-head", style: { color: a.color }, children: a.label }),
         L4.map((b, j) => {
           const { l, r, ok } = results[i][j];
-          return /* @__PURE__ */ jsx("td", { style: {
-            color: ok ? "#00ff88" : "#ff4444",
-            background: ok ? "#001a0d" : "#1a0000",
-            padding: "4px 10px",
-            textAlign: "center",
-            border: `1px solid ${ok ? "#00ff8820" : "#ff444440"}`
-          }, children: ok ? `${l} \u2713` : `${l}\u2260${r}` }, b.id);
+          return jsx("td", { className: ok ? "ok" : "ng", children: ok ? `${l} ✓` : `${l}≠${r}` }, b.id);
         })
       ] }, a.id)) })
     ] })
   ] });
 }
 const CALC_OPS = [
-  { id: "neg", sym: "\xAC", arity: 1, fn: neg, label: "\xACA = iA\u207B\xB9", color: "#B388FF" },
-  { id: "conj", sym: "\u2227", arity: 2, fn: conj, label: "A\u2227B = AB", color: "#00E5FF" },
-  { id: "disj", sym: "\u2228", arity: 2, fn: disj, label: "A\u2228B = \u2212iAB", color: "#FF4081" },
-  { id: "impl", sym: "\u21D2", arity: 2, fn: impl, label: "A\u21D2B = BA\u207B\xB9", color: "#FFD740" }
+  { id: "neg", sym: "¬", arity: 1, fn: neg, label: "¬A = iA⁻¹", color: "#B388FF" },
+  { id: "conj", sym: "∧", arity: 2, fn: conj, label: "A∧B = AB", color: "#00E5FF" },
+  { id: "disj", sym: "∨", arity: 2, fn: disj, label: "A∨B = −iAB", color: "#FF4081" },
+  { id: "impl", sym: "⇒", arity: 2, fn: impl, label: "A⇒B = BA⁻¹", color: "#FFD740" }
 ];
 function ValuePicker({ label, value, onChange }) {
-  return /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }, children: [
-    /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 12, fontFamily: "monospace" }, children: label }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: L4.map((e) => /* @__PURE__ */ jsxs("button", { onClick: () => onChange(e.id), style: {
+  return jsxs("div", { className: "upl-picker", children: [
+    jsx("span", { className: "upl-picker-label", children: label }),
+    jsx("div", { className: "upl-btn-row", children: L4.map((e) => jsxs("button", { onClick: () => onChange(e.id), className: "upl-val-btn", style: {
       background: value === e.id ? e.color : "#11112a",
       color: value === e.id ? "#000" : e.color,
-      border: `1px solid ${e.color}`,
-      borderRadius: 8,
-      padding: "8px 12px",
-      fontSize: 14,
-      fontFamily: "monospace",
-      cursor: "pointer",
-      transition: "all 0.15s",
-      minWidth: 44
+      border: `1px solid ${e.color}`
     }, children: [
-      /* @__PURE__ */ jsx("div", { children: e.label }),
-      /* @__PURE__ */ jsx("div", { style: { fontSize: 10, opacity: 0.8 }, children: e.iLabel })
+      jsx("div", { children: e.label }),
+      jsx("div", { className: "upl-val-btn-sub", children: e.iLabel })
     ] }, e.id)) })
   ] });
 }
@@ -366,248 +206,141 @@ function Calculator() {
   const aElem = getElem(selA);
   const bElem = getElem(selB);
   const resElem = getElem(result);
-  return /* @__PURE__ */ jsxs("div", { style: {
-    background: "#0d0d1a",
-    border: "1px solid #1e1e3a",
-    borderRadius: 16,
-    padding: "24px 20px 18px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 16,
-    minWidth: 280,
-    maxWidth: 640
-  }, children: [
-    /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: "\u8AD6\u7406\u6F14\u7B97\u96FB\u5353" }),
-    /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center", alignItems: "flex-start" }, children: [
-      /* @__PURE__ */ jsx(ValuePicker, { label: "A", value: selA, onChange: setSelA }),
-      /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }, children: [
-        /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 12, fontFamily: "monospace" }, children: "\u6F14\u7B97\u5B50" }),
-        /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: CALC_OPS.map((o) => /* @__PURE__ */ jsx("button", { onClick: () => setOpId(o.id), title: o.label, style: {
+  return jsxs("div", { className: "upl-card upl-card--calc", children: [
+    jsx("div", { className: "upl-card-title", children: "論理演算電卓" }),
+    jsxs("div", { className: "upl-picker-group", children: [
+      jsx(ValuePicker, { label: "A", value: selA, onChange: setSelA }),
+      jsxs("div", { className: "upl-picker", children: [
+        jsx("span", { className: "upl-picker-label", children: "演算子" }),
+        jsx("div", { className: "upl-btn-row", children: CALC_OPS.map((o) => jsx("button", { onClick: () => setOpId(o.id), title: o.label, className: "upl-val-btn upl-val-btn--op", style: {
           background: opId === o.id ? o.color : "#11112a",
           color: opId === o.id ? "#000" : o.color,
-          border: `1px solid ${o.color}`,
-          borderRadius: 8,
-          padding: "8px 12px",
-          fontSize: 16,
-          fontFamily: "monospace",
-          cursor: "pointer",
-          transition: "all 0.15s",
-          minWidth: 44
+          border: `1px solid ${o.color}`
         }, children: o.sym }, o.id)) })
       ] }),
-      op.arity === 2 && /* @__PURE__ */ jsx(ValuePicker, { label: "B", value: selB, onChange: setSelB })
+      op.arity === 2 && jsx(ValuePicker, { label: "B", value: selB, onChange: setSelB })
     ] }),
-    /* @__PURE__ */ jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
-      /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
-      /* @__PURE__ */ jsx("circle", { cx: CX, cy: CY, r: R, fill: "none", stroke: "#1e1e3a", strokeWidth: 1.5 }),
+    jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
+      jsx(DiagramGrid, {}),
       L4.map((e) => {
         const { x, y } = polarToXY(e.phase);
-        return /* @__PURE__ */ jsx("circle", { cx: x, cy: y, r: 7, fill: "#11112a", stroke: e.color, strokeWidth: 1, opacity: 0.4 }, e.id);
+        return jsx("circle", { cx: x, cy: y, r: 7, fill: "#11112a", stroke: e.color, strokeWidth: 1, opacity: 0.4 }, e.id);
       }),
-      /* @__PURE__ */ jsx(Arrow, { from: aElem, to: resElem, color: "#00E5FF", curved: selA !== result }),
-      op.arity === 2 && selB !== selA && /* @__PURE__ */ jsx(Arrow, { from: bElem, to: resElem, color: "#FF4081", curved: true, dashed: true }),
-      /* @__PURE__ */ jsx(NodeDot, { elem: aElem, size: 9 }),
-      op.arity === 2 && selB !== selA && /* @__PURE__ */ jsx(NodeDot, { elem: bElem, size: 9 }),
-      /* @__PURE__ */ jsx(NodeDot, { elem: resElem, size: 11, pulse: true }),
-      L4.map((e) => {
-        const { x, y } = polarToXY(e.phase, R + 20);
-        return /* @__PURE__ */ jsx("text", { x, y, fill: e.color, fontSize: 12, fontFamily: "monospace", textAnchor: "middle", dominantBaseline: "middle", children: e.label }, e.id);
-      })
+      jsx(Arrow, { from: aElem, to: resElem, color: "#00E5FF", curved: selA !== result }),
+      op.arity === 2 && selB !== selA && jsx(Arrow, { from: bElem, to: resElem, color: "#FF4081", curved: true, dashed: true }),
+      jsx(NodeDot, { elem: aElem, size: 9 }),
+      op.arity === 2 && selB !== selA && jsx(NodeDot, { elem: bElem, size: 9 }),
+      jsx(NodeDot, { elem: resElem, size: 11, pulse: true }),
+      jsx(ElemLabels, {})
     ] }),
-    /* @__PURE__ */ jsxs("div", { style: { fontFamily: "monospace", fontSize: 20, color: "#ffffff", letterSpacing: "0.05em" }, children: [
-      op.arity === 1 ? /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0" }, children: op.sym }),
-        /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA })
-      ] }) : /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA }),
-        /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0" }, children: [" ", op.sym, " "] }),
-        /* @__PURE__ */ jsx("span", { style: { color: bElem.color }, children: selB })
+    jsxs("div", { className: "upl-result upl-result--lg", children: [
+      op.arity === 1 ? jsxs(Fragment, { children: [
+        jsx("span", { className: "upl-dim", children: op.sym }),
+        jsx("span", { style: { color: aElem.color }, children: selA })
+      ] }) : jsxs(Fragment, { children: [
+        jsx("span", { style: { color: aElem.color }, children: selA }),
+        jsxs("span", { className: "upl-dim", children: [" ", op.sym, " "] }),
+        jsx("span", { style: { color: bElem.color }, children: selB })
       ] }),
-      /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0" }, children: " = " }),
-      /* @__PURE__ */ jsx("span", { style: { color: resElem.color, fontWeight: "bold" }, children: result }),
-      /* @__PURE__ */ jsxs("span", { style: { color: "#9a9ad0", fontSize: 14 }, children: [" [", resElem.iLabel, "]"] })
+      jsx("span", { className: "upl-dim", children: " = " }),
+      jsx("span", { style: { color: resElem.color, fontWeight: "bold" }, children: result }),
+      jsxs("span", { className: "upl-dim upl-result-sub", children: [" [", resElem.iLabel, "]"] })
     ] }),
-    /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, fontFamily: "monospace", textAlign: "center" }, children: op.label })
+    jsx("div", { className: "upl-note", children: op.label })
+  ] });
+}
+function TruthTable({ opSym, opFn, classical }) {
+  return jsxs("div", { className: "upl-card", children: [
+    jsx("div", { className: "upl-card-title upl-card-title--mb12", children: "L₄ 全真理表" }),
+    jsxs("table", { className: "upl-table", children: [
+      jsx("thead", { children: jsxs("tr", { children: [
+        jsx("th", { className: "upl-corner", children: opSym }),
+        L4.map((e) => jsx("th", { style: { color: e.color }, children: e.label }, e.id))
+      ] }) }),
+      jsx("tbody", { children: L4.map((a) => jsxs("tr", { children: [
+        jsx("td", { className: "upl-row-head", style: { color: a.color }, children: a.label }),
+        L4.map((b) => {
+          const r = opFn(a.id, b.id);
+          const re = getElem(r);
+          const classicalR = classical(a, b);
+          const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
+          return jsx("td", { style: { color: cellColor }, children: r }, b.id);
+        })
+      ] }, a.id)) })
+    ] })
   ] });
 }
 const TABS = [
-  { id: "calc", label: "\u96FB\u5353" },
-  { id: "neg", label: "\u5426\u5B9A \xAC" },
-  { id: "conj", label: "\u9023\u8A00 \u2227" },
-  { id: "disj", label: "\u9078\u8A00 \u2228" },
-  { id: "impl", label: "\u542B\u610F \u21D2" },
-  { id: "laws", label: "\u8AF8\u6CD5\u5247" }
+  { id: "calc", label: "電卓" },
+  { id: "neg", label: "否定 ¬" },
+  { id: "conj", label: "連言 ∧" },
+  { id: "disj", label: "選言 ∨" },
+  { id: "impl", label: "含意 ⇒" },
+  { id: "laws", label: "諸法則" }
 ];
 function App() {
   const [tab, setTab] = useState("calc");
-  return /* @__PURE__ */ jsx("div", { style: {
-    minHeight: "100vh",
-    background: "#080812",
-    color: "#ffffff",
-    fontFamily: "'Space Mono', 'Courier New', monospace",
-    padding: "32px 24px"
-  }, children: /* @__PURE__ */ jsxs("div", { style: { maxWidth: 900, margin: "0 auto" }, children: [
-    /* @__PURE__ */ jsxs("div", { style: { marginBottom: 32, borderBottom: "1px solid #1e1e3a", paddingBottom: 20 }, children: [
-      /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, letterSpacing: "0.15em", marginBottom: 6 }, children: "U(1) MULTI-VALUED LOGIC" }),
-      /* @__PURE__ */ jsx("h1", { style: { margin: 0, fontSize: 22, fontWeight: 400, letterSpacing: "0.05em", color: "#e0e0ff" }, children: "L\u2084 = {+1, \u22121, +i, \u2212i} \u4F4D\u76F8\u56F3\u89E3" }),
-      /* @__PURE__ */ jsx("div", { style: { marginTop: 10, display: "flex", gap: 12 }, children: [{ c: "#00E5FF", l: "T (\xB11)" }, { c: "#FF4081", l: "F (\xB1i)" }].map(({ c, l }) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6 }, children: [
-        /* @__PURE__ */ jsx("div", { style: { width: 10, height: 10, borderRadius: "50%", background: c, boxShadow: `0 0 6px ${c}` } }),
-        /* @__PURE__ */ jsx("span", { style: { color: "#9a9ad0", fontSize: 11 }, children: l })
+  return jsx("div", { className: "upl-app", children: jsxs("div", { className: "upl-container", children: [
+    jsxs("div", { className: "upl-header", children: [
+      jsx("div", { className: "upl-eyebrow", children: "U(1) MULTI-VALUED LOGIC" }),
+      jsx("h1", { className: "upl-title", children: "L₄ = {+1, −1, +i, −i} 位相図解" }),
+      jsx("div", { className: "upl-legend", children: [{ c: "#00E5FF", l: "T (±1)" }, { c: "#FF4081", l: "F (±i)" }].map(({ c, l }) => jsxs("div", { className: "upl-legend-item", children: [
+        jsx("div", { className: "upl-legend-dot", style: { background: c, boxShadow: `0 0 6px ${c}` } }),
+        jsx("span", { className: "upl-legend-label", children: l })
       ] }, l)) })
     ] }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 4, marginBottom: 28 }, children: TABS.map((t) => /* @__PURE__ */ jsx("button", { onClick: () => setTab(t.id), style: {
-      background: tab === t.id ? "#1e1e3a" : "transparent",
-      color: tab === t.id ? "#e0e0ff" : "#9a9ad0",
-      border: `1px solid ${tab === t.id ? "#3a3a6a" : "#1e1e3a"}`,
-      borderRadius: 8,
-      padding: "7px 14px",
-      fontSize: 12,
-      fontFamily: "monospace",
-      cursor: "pointer",
-      transition: "all 0.15s",
-      letterSpacing: "0.05em"
-    }, children: t.label }, t.id)) }),
-    /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "center" }, children: [
-      tab === "calc" && /* @__PURE__ */ jsx(Calculator, {}),
-      tab === "neg" && /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx(NegDiagram, {}),
-        /* @__PURE__ */ jsxs("div", { style: {
-          background: "#0d0d1a",
-          border: "1px solid #1e1e3a",
-          borderRadius: 16,
-          padding: "20px 16px",
-          minWidth: 280,
-          display: "flex",
-          flexDirection: "column",
-          gap: 10
-        }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase" }, children: "\u771F\u7406\u8868" }),
-          /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 13 }, children: [
-            /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsx("tr", { children: ["A", "I(A)", "\xACA", "I(\xACA)"].map((h) => /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "6px 14px", textAlign: "center", borderBottom: "1px solid #1e1e3a" }, children: h }, h)) }) }),
-            /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => {
+    jsx("div", { className: "upl-tabs", children: TABS.map((t) => jsx("button", { onClick: () => setTab(t.id), className: `upl-tab ${tab === t.id ? "active" : ""}`, children: t.label }, t.id)) }),
+    jsxs("div", { className: "upl-content", children: [
+      tab === "calc" && jsx(Calculator, {}),
+      tab === "neg" && jsxs(Fragment, { children: [
+        jsx(NegDiagram, {}),
+        jsxs("div", { className: "upl-card upl-card--column", children: [
+          jsx("div", { className: "upl-card-title", children: "真理表" }),
+          jsxs("table", { className: "upl-table upl-table--md", children: [
+            jsx("thead", { children: jsx("tr", { children: ["A", "I(A)", "¬A", "I(¬A)"].map((h) => jsx("th", { className: "upl-corner", children: h }, h)) }) }),
+            jsx("tbody", { children: L4.map((a) => {
               const na = neg(a.id);
               const ne = getElem(na);
-              return /* @__PURE__ */ jsxs("tr", { children: [
-                /* @__PURE__ */ jsx("td", { style: { color: a.color, padding: "6px 14px", textAlign: "center" }, children: a.label }),
-                /* @__PURE__ */ jsx("td", { style: { color: a.iLabel === "T" ? "#00E5FF" : "#FF4081", padding: "6px 14px", textAlign: "center" }, children: a.iLabel }),
-                /* @__PURE__ */ jsx("td", { style: { color: ne.color, padding: "6px 14px", textAlign: "center" }, children: na }),
-                /* @__PURE__ */ jsx("td", { style: { color: ne.iLabel === "T" ? "#00E5FF" : "#FF4081", padding: "6px 14px", textAlign: "center" }, children: ne.iLabel })
+              return jsxs("tr", { children: [
+                jsx("td", { style: { color: a.color }, children: a.label }),
+                jsx("td", { style: { color: a.iLabel === "T" ? "#00E5FF" : "#FF4081" }, children: a.iLabel }),
+                jsx("td", { style: { color: ne.color }, children: na }),
+                jsx("td", { style: { color: ne.iLabel === "T" ? "#00E5FF" : "#FF4081" }, children: ne.iLabel })
               ] }, a.id);
             }) })
           ] }),
-          /* @__PURE__ */ jsx("div", { style: { color: "#9a9ad0", fontSize: 11, marginTop: 8 }, children: "\xAC\xACA = A\uFF08\u5024\u30EC\u30D9\u30EB\u30FB\u5BFE\u5408\uFF09" })
+          jsx("div", { className: "upl-note upl-note--left", children: "¬¬A = A（値レベル・対合）" })
         ] })
       ] }),
-      tab === "conj" && /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx(BinaryDiagram, { op: conj, opLabel: "\u2227", title: "\u9023\u8A00 A\u2227B = AB", note: "\u4F4D\u76F8\u306E\u548C = \u8907\u7D20\u4E57\u6CD5", color: "#00E5FF" }),
-        /* @__PURE__ */ jsxs("div", { style: {
-          background: "#0d0d1a",
-          border: "1px solid #1e1e3a",
-          borderRadius: 16,
-          padding: "20px 16px",
-          minWidth: 280
-        }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
-          /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
-            /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u2227" }),
-              L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
-            ] }) }),
-            /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("td", { style: { color: a.color, padding: "4px 10px", borderRight: "1px solid #1e1e3a" }, children: a.label }),
-              L4.map((b) => {
-                const r = conj(a.id, b.id);
-                const re = getElem(r);
-               const classicalR = a.iLabel === "T" && b.iLabel === "T" ? "T" : "F";
-               const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
-               return /* @__PURE__ */ jsx("td", { style: { color: cellColor, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
-              })
-            ] }, a.id)) })
-          ] })
-        ] })
+      tab === "conj" && jsxs(Fragment, { children: [
+        jsx(BinaryDiagram, { op: conj, opLabel: "∧", title: "連言 A∧B = AB", note: "位相の和 = 複素乗法" }),
+        jsx(TruthTable, { opSym: "∧", opFn: conj, classical: (a, b) => a.iLabel === "T" && b.iLabel === "T" ? "T" : "F" })
       ] }),
-      tab === "disj" && /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx(BinaryDiagram, { op: disj, opLabel: "\u2228", title: "\u9078\u8A00 A\u2228B = \u2212iAB", note: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u5B9A\u7FA9", color: "#FF4081" }),
-        /* @__PURE__ */ jsxs("div", { style: {
-          background: "#0d0d1a",
-          border: "1px solid #1e1e3a",
-          borderRadius: 16,
-          padding: "20px 16px",
-          minWidth: 280
-        }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
-          /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
-            /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u2228" }),
-              L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
-            ] }) }),
-            /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("td", { style: { color: a.color, padding: "4px 10px", borderRight: "1px solid #1e1e3a" }, children: a.label }),
-              L4.map((b) => {
-                const r = disj(a.id, b.id);
-                const re = getElem(r);
-               const classicalR = a.iLabel === "T" || b.iLabel === "T" ? "T" : "F";
-               const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
-               return /* @__PURE__ */ jsx("td", { style: { color: cellColor, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
-              })
-            ] }, a.id)) })
-          ] })
-        ] })
+      tab === "disj" && jsxs(Fragment, { children: [
+        jsx(BinaryDiagram, { op: disj, opLabel: "∨", title: "選言 A∨B = −iAB", note: "ド・モルガン定義" }),
+        jsx(TruthTable, { opSym: "∨", opFn: disj, classical: (a, b) => a.iLabel === "T" || b.iLabel === "T" ? "T" : "F" })
       ] }),
-      tab === "impl" && /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx(BinaryDiagram, { op: impl, opLabel: "\u21D2", title: "\u542B\u610F A\u21D2B = BA\u207B\xB9", note: "\u8AD6\u7406\u5546 = \u4F4D\u76F8\u5DEE", color: "#FFD740" }),
-        /* @__PURE__ */ jsxs("div", { style: {
-          background: "#0d0d1a",
-          border: "1px solid #1e1e3a",
-          borderRadius: 16,
-          padding: "20px 16px",
-          minWidth: 280
-        }, children: [
-          /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }, children: "L\u2084 \u5168\u771F\u7406\u8868" }),
-          /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
-            /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("th", { style: { color: "#9a9ad0", padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: "\u21D2" }),
-              L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
-            ] }) }),
-            /* @__PURE__ */ jsx("tbody", { children: L4.map((a) => /* @__PURE__ */ jsxs("tr", { children: [
-              /* @__PURE__ */ jsx("td", { style: { color: a.color, padding: "4px 10px", borderRight: "1px solid #1e1e3a" }, children: a.label }),
-              L4.map((b) => {
-                const r = impl(a.id, b.id);
-                const re = getElem(r);
-               const classicalR = a.iLabel === "T" && b.iLabel === "F" ? "F" : "T";
-               const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
-               return /* @__PURE__ */ jsx("td", { style: { color: cellColor, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
-              })
-            ] }, a.id)) })
-          ] })
-        ] })
+      tab === "impl" && jsxs(Fragment, { children: [
+        jsx(BinaryDiagram, { op: impl, opLabel: "⇒", title: "含意 A⇒B = BA⁻¹", note: "論理商 = 位相差" }),
+        jsx(TruthTable, { opSym: "⇒", opFn: impl, classical: (a, b) => a.iLabel === "T" && b.iLabel === "F" ? "F" : "T" })
       ] }),
-      tab === "laws" && /* @__PURE__ */ jsxs("div", { style: {
-        background: "#0d0d1a",
-        border: "1px solid #1e1e3a",
-        borderRadius: 16,
-        padding: "24px 20px",
-        width: "100%",
-        maxWidth: 700
-      }, children: [
-        /* @__PURE__ */ jsx("div", { style: { color: "#c8c8e8", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 20 }, children: "\u8AF8\u6CD5\u5247\u306E\u691C\u8A3C" }),
-        /* @__PURE__ */ jsx(TautologyRow, { label: "\u6392\u4E2D\u5F8B A\u2228\xACA", fn: (a) => disj(a, neg(a)), expected: "T" }),
-        /* @__PURE__ */ jsx(TautologyRow, { label: "\u77DB\u76FE\u5F8B A\u2227\xACA", fn: (a) => conj(a, neg(a)), expected: "F" }),
-        /* @__PURE__ */ jsx(TautologyRow, { label: "\u4E8C\u91CD\u5426\u5B9A \xAC\xACA = A", fn: (a) => {
+      tab === "laws" && jsxs("div", { className: "upl-card upl-card--laws", children: [
+        jsx("div", { className: "upl-card-title upl-card-title--mb20", children: "諸法則の検証" }),
+        jsx(TautologyRow, { label: "排中律 A∨¬A", fn: (a) => disj(a, neg(a)), expected: "T" }),
+        jsx(TautologyRow, { label: "矛盾律 A∧¬A", fn: (a) => conj(a, neg(a)), expected: "F" }),
+        jsx(TautologyRow, { label: "二重否定 ¬¬A = A", fn: (a) => {
           const r = neg(neg(a));
           return r === a ? "+1" : "+i";
         }, expected: "T" }),
-        /* @__PURE__ */ jsx(LawRow, { label: "\u542B\u610F\u306E\u53CD\u5C04\u5F8B A\u21D2A = T", fn: (a) => impl(a, a), expect: () => "+1" }),
-        /* @__PURE__ */ jsx(LawRow, { label: "\u80CC\u7406\u6CD5 \xACA\u21D2\u22A5 = A", fn: (a) => impl(neg(a), "+i"), expect: (a) => a }),
-        /* @__PURE__ */ jsx(LawRow, { label: "\u7206\u767A\u6291\u5236 \u22A5\u21D2B = \u2212iB", fn: (b) => impl("+i", b), expect: (b) => conj("-i", b) }),
-        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u7B2C\u4E00\u6CD5\u5247\u3000\xAC(A\u2227B) = \xACA\u2228\xACB", lhs: (a, b) => neg(conj(a, b)), rhs: (a, b) => disj(neg(a), neg(b)) }),
-        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u7B2C\u4E8C\u6CD5\u5247\u3000\xAC(A\u2228B) = \xACA\u2227\xACB", lhs: (a, b) => neg(disj(a, b)), rhs: (a, b) => conj(neg(a), neg(b)) }),
-        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u5BFE\u5076\u5F8B\u3000(A\u21D2B) = (\xACB\u21D2\xACA)", lhs: (a, b) => impl(a, b), rhs: (a, b) => impl(neg(b), neg(a)) }),
-        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30E2\u30FC\u30C0\u30B9\u30DD\u30CD\u30F3\u30B9\u3000A\u2227(A\u21D2B) = B", lhs: (a, b) => conj(a, impl(a, b)), rhs: (a, b) => b }),
-        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30E2\u30FC\u30C0\u30B9\u30C8\u30EC\u30F3\u30B9\u3000\xACB\u2227(A\u21D2B) = \xACA", lhs: (a, b) => conj(neg(b), impl(a, b)), rhs: (a, b) => neg(a) }),
-        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u666E\u904D\u7684\u53CC\u6761\u4EF6\u3000(A\u21D2B)\u2227(B\u21D2A) = T", lhs: (a, b) => conj(impl(a, b), impl(b, a)), rhs: () => "+1" })
+        jsx(LawRow, { label: "含意の反射律 A⇒A = T", fn: (a) => impl(a, a), expect: () => "+1" }),
+        jsx(LawRow, { label: "背理法 ¬A⇒⊥ = A", fn: (a) => impl(neg(a), "+i"), expect: (a) => a }),
+        jsx(LawRow, { label: "爆発抑制 ⊥⇒B = −iB", fn: (b) => impl("+i", b), expect: (b) => conj("-i", b) }),
+        jsx(BinaryLawTable, { label: "ド・モルガン第一法則　¬(A∧B) = ¬A∨¬B", lhs: (a, b) => neg(conj(a, b)), rhs: (a, b) => disj(neg(a), neg(b)) }),
+        jsx(BinaryLawTable, { label: "ド・モルガン第二法則　¬(A∨B) = ¬A∧¬B", lhs: (a, b) => neg(disj(a, b)), rhs: (a, b) => conj(neg(a), neg(b)) }),
+        jsx(BinaryLawTable, { label: "対偶律　(A⇒B) = (¬B⇒¬A)", lhs: (a, b) => impl(a, b), rhs: (a, b) => impl(neg(b), neg(a)) }),
+        jsx(BinaryLawTable, { label: "モーダスポネンス　A∧(A⇒B) = B", lhs: (a, b) => conj(a, impl(a, b)), rhs: (a, b) => b }),
+        jsx(BinaryLawTable, { label: "モーダストレンス　¬B∧(A⇒B) = ¬A", lhs: (a, b) => conj(neg(b), impl(a, b)), rhs: (a, b) => neg(a) }),
+        jsx(BinaryLawTable, { label: "普遍的双条件　(A⇒B)∧(B⇒A) = T", lhs: (a, b) => conj(impl(a, b), impl(b, a)), rhs: () => "+1" })
       ] })
     ] })
   ] }) });

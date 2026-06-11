@@ -1,0 +1,423 @@
+/* U(1) Logic Visualization — design layer
+   Logic lives in u1_logic_viz.js / u1_logic_core.js */
+
+:root {
+  --upl-bg: #080812;
+  --upl-panel: #0d0d1a;
+  --upl-panel-alt: #11112a;
+  --upl-line: #1e1e3a;
+  --upl-line-strong: #3a3a6a;
+  --upl-text: #ffffff;
+  --upl-text-bright: #e0e0ff;
+  --upl-text-title: #c8c8e8;
+  --upl-text-dim: #9a9ad0;
+  --upl-text-axis: #6a6aa8;
+  --upl-ok: #00ff88;
+  --upl-ok-bg: #001a0d;
+  --upl-ok-border: #00ff8840;
+  --upl-ok-border-faint: #00ff8820;
+  --upl-ng: #ff4444;
+  --upl-ng-bg: #1a0000;
+  --upl-ng-border: #ff444440;
+}
+
+.upl-app {
+  min-height: 100vh;
+  background: var(--upl-bg);
+  color: var(--upl-text);
+  font-family: 'Space Mono', 'Courier New', monospace;
+  padding: 32px 24px;
+}
+
+.upl-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+.upl-header {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--upl-line);
+  padding-bottom: 20px;
+}
+
+.upl-eyebrow {
+  color: var(--upl-text-dim);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+}
+
+.upl-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--upl-text-bright);
+}
+
+.upl-legend {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+}
+
+.upl-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.upl-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.upl-legend-label {
+  color: var(--upl-text-dim);
+  font-size: 11px;
+}
+
+/* Tabs */
+.upl-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.upl-tab {
+  background: transparent;
+  color: var(--upl-text-dim);
+  border: 1px solid var(--upl-line);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-family: monospace;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+}
+
+.upl-tab.active {
+  background: var(--upl-line);
+  color: var(--upl-text-bright);
+  border-color: var(--upl-line-strong);
+}
+
+.upl-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+/* Cards */
+.upl-card {
+  background: var(--upl-panel);
+  border: 1px solid var(--upl-line);
+  border-radius: 16px;
+  padding: 20px 16px;
+  min-width: 280px;
+}
+
+.upl-card--center {
+  padding: 20px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.upl-card--calc {
+  padding: 24px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.upl-card--column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upl-card--laws {
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.upl-card-title {
+  color: var(--upl-text-title);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: monospace;
+}
+
+.upl-card-title--mb12 {
+  margin-bottom: 12px;
+}
+
+.upl-card-title--mb20 {
+  margin-bottom: 20px;
+}
+
+.upl-note {
+  color: var(--upl-text-dim);
+  font-size: 11px;
+  font-family: monospace;
+  text-align: center;
+  max-width: 240px;
+}
+
+.upl-note--left {
+  text-align: left;
+  max-width: none;
+  margin-top: 8px;
+}
+
+.upl-dim {
+  color: var(--upl-text-dim);
+}
+
+/* SVG diagram parts */
+.upl-grid-line {
+  stroke: var(--upl-line);
+  stroke-width: 1;
+}
+
+.upl-grid-circle {
+  fill: none;
+  stroke: var(--upl-line);
+  stroke-width: 1.5;
+}
+
+.upl-axis-text {
+  fill: var(--upl-text-axis);
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.upl-elem-text {
+  font-size: 12px;
+  font-family: monospace;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* Pickers and buttons */
+.upl-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.upl-picker--tight {
+  gap: 4px;
+}
+
+.upl-picker-label {
+  color: var(--upl-text-dim);
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.upl-picker-label--sm {
+  font-size: 11px;
+}
+
+.upl-btn-row {
+  display: flex;
+  gap: 6px;
+}
+
+.upl-btn-row--tight {
+  gap: 4px;
+}
+
+.upl-val-btn {
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: monospace;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-width: 44px;
+}
+
+.upl-val-btn--sm {
+  border-radius: 6px;
+  padding: 3px 7px;
+  font-size: 11px;
+  min-width: 0;
+}
+
+.upl-val-btn--op {
+  font-size: 16px;
+}
+
+.upl-val-btn-sub {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.upl-picker-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.upl-picker-pair {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Result line */
+.upl-result {
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--upl-text);
+  letter-spacing: 0.05em;
+}
+
+.upl-result--lg {
+  font-size: 20px;
+}
+
+.upl-result-sub {
+  font-size: 14px;
+}
+
+/* Tables */
+.upl-table {
+  border-collapse: collapse;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.upl-table--md {
+  font-size: 13px;
+}
+
+.upl-table th,
+.upl-table td {
+  padding: 4px 10px;
+  text-align: center;
+}
+
+.upl-table--md th,
+.upl-table--md td {
+  padding: 6px 14px;
+}
+
+.upl-table th {
+  border-bottom: 1px solid var(--upl-line);
+}
+
+.upl-table .upl-corner {
+  color: var(--upl-text-dim);
+}
+
+.upl-table .upl-row-head {
+  border-right: 1px solid var(--upl-line);
+}
+
+/* Law verification rows and chips */
+.upl-law-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--upl-line);
+}
+
+.upl-law-label {
+  color: var(--upl-text-title);
+  font-family: monospace;
+  font-size: 13px;
+  width: 160px;
+}
+
+.upl-chips {
+  display: flex;
+  gap: 6px;
+}
+
+.upl-chips--wrap {
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.upl-chip {
+  font-family: monospace;
+  font-size: 11px;
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+
+.upl-chip.ok {
+  color: var(--upl-ok);
+  background: var(--upl-ok-bg);
+  border: 1px solid var(--upl-ok-border);
+}
+
+.upl-chip.ng {
+  color: var(--upl-ng);
+  background: var(--upl-ng-bg);
+  border: 1px solid var(--upl-ng-border);
+}
+
+.upl-law-status {
+  margin-left: auto;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.upl-law-status.ok,
+.upl-status.ok {
+  color: var(--upl-ok);
+}
+
+.upl-law-status.ng,
+.upl-status.ng {
+  color: var(--upl-ng);
+}
+
+.upl-status {
+  font-size: 12px;
+}
+
+/* Binary law 4x4 table */
+.upl-law-table-block {
+  margin-top: 20px;
+}
+
+.upl-law-table-caption {
+  margin-bottom: 10px;
+  color: var(--upl-text-dim);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upl-law-table td.ok {
+  color: var(--upl-ok);
+  background: var(--upl-ok-bg);
+  border: 1px solid var(--upl-ok-border-faint);
+}
+
+.upl-law-table td.ng {
+  color: var(--upl-ng);
+  background: var(--upl-ng-bg);
+  border: 1px solid var(--upl-ng-border);
+}
