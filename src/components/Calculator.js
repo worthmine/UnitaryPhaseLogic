@@ -3,6 +3,7 @@ import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { L4, conj, disj, getElem, impl, neg } from "../u1_logic_core";
 import { OpDiagramSvg, valButtonStyle } from "./diagram";
+import { useT } from "../i18n";
 
 export const CALC_OPS = [
   { id: "neg", sym: "¬", arity: 1, fn: neg, label: "¬A = iA⁻¹", color: "#B388FF" },
@@ -22,6 +23,7 @@ function ValuePicker({ label, value, onChange }) {
 }
 
 export function Calculator() {
+  const t = useT();
   const [selA, setSelA] = useState("+1");
   const [opId, setOpId] = useState("conj");
   const [selB, setSelB] = useState("+i");
@@ -32,11 +34,11 @@ export function Calculator() {
   const resElem = getElem(result);
   const showB = op.arity === 2 && selB !== selA;
   return jsxs("div", { className: "upl-card upl-card--calc", children: [
-    jsx("div", { className: "upl-card-title", children: "論理演算電卓" }),
+    jsx("div", { className: "upl-card-title", children: t("calcTitle") }),
     jsxs("div", { className: "upl-picker-group", children: [
       jsx(ValuePicker, { label: "A", value: selA, onChange: setSelA }),
       jsxs("div", { className: "upl-picker", children: [
-        jsx("span", { className: "upl-picker-label", children: "演算子" }),
+        jsx("span", { className: "upl-picker-label", children: t("operator") }),
         jsx("div", { className: "upl-btn-row", children: CALC_OPS.map((o) => jsx("button", { onClick: () => setOpId(o.id), title: o.label, className: "upl-val-btn upl-val-btn--op", style: valButtonStyle(opId === o.id, o.color), children: o.sym }, o.id)) })
       ] }),
       op.arity === 2 && jsx(ValuePicker, { label: "B", value: selB, onChange: setSelB })

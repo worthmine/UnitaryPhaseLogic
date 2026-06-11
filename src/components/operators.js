@@ -3,9 +3,11 @@ import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { L4, getElem, neg } from "../u1_logic_core";
 import { Arrow, CircleDiagram, ElemLabels, NodeDot, OpDiagramSvg, valButtonStyle } from "./diagram";
+import { useT } from "../i18n";
 
 export function NegDiagram() {
-  return jsxs(CircleDiagram, { title: "¬A = iA⁻¹", note: "¬¬A = A（値レベル対合）　θ(¬A) = π/2 − θ(A)", children: [
+  const t = useT();
+  return jsxs(CircleDiagram, { title: "¬A = iA⁻¹", note: t("negNote"), children: [
     L4.map((a) => {
       const nb = getElem(neg(a.id));
       return jsx(Arrow, { from: a, to: nb, color: a.color }, a.id);
@@ -16,8 +18,9 @@ export function NegDiagram() {
 }
 
 export function NegTruthTable() {
+  const t = useT();
   return jsxs("div", { className: "upl-card upl-card--column", children: [
-    jsx("div", { className: "upl-card-title", children: "真理表" }),
+    jsx("div", { className: "upl-card-title", children: t("truthTable") }),
     jsxs("table", { className: "upl-table upl-table--md", children: [
       jsx("thead", { children: jsx("tr", { children: ["A", "I(A)", "¬A", "I(¬A)"].map((h) => jsx("th", { className: "upl-corner", children: h }, h)) }) }),
       jsx("tbody", { children: L4.map((a) => {
@@ -31,7 +34,7 @@ export function NegTruthTable() {
         ] }, a.id);
       }) })
     ] }),
-    jsx("div", { className: "upl-note upl-note--left", children: "¬¬A = A（値レベル・対合）" })
+    jsx("div", { className: "upl-note upl-note--left", children: t("negInvolution") })
   ] });
 }
 
@@ -62,8 +65,9 @@ export function BinaryDiagram({ op, opLabel, title, note }) {
 }
 
 export function TruthTable({ opSym, opFn, classicalFn }) {
+  const t = useT();
   return jsxs("div", { className: "upl-card", children: [
-    jsx("div", { className: "upl-card-title upl-card-title--mb12", children: "L₄ 全真理表" }),
+    jsx("div", { className: "upl-card-title upl-card-title--mb12", children: t("fullTruthTable") }),
     jsxs("table", { className: "upl-table", children: [
       jsx("thead", { children: jsxs("tr", { children: [
         jsx("th", { className: "upl-corner", children: opSym }),
