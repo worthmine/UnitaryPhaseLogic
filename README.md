@@ -23,7 +23,7 @@ The classical mapping uses `cos(θ)`: positive → T, zero → F, negative → o
 | AND   | A ∧ B = A · B    | Matrix (complex) multiplication — phase addition on the unit circle |
 | OR    | A ∨ B = −i·(A·B) | AND followed by a −90° rotation |
 | IMPLIES | A ⇒ B = B · A† | Phase difference from A to B |
-| EQAL  | A ⇔ B = B · A† | Phase difference from A to B; T only when A = B |
+| EQAL  | A ⇔ B = B · A† | Phase difference from A to B; T when A and B share the same logical value (phase) |
 
 ## Logical Consequences
 
