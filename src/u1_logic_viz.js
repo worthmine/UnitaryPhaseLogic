@@ -263,6 +263,74 @@ function TautologyRow({ label, fn, expected }) {
     }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
   ] });
 }
+function LawRow({ label, fn, expect }) {
+  const results = L4.map((a) => {
+    const r = fn(a.id);
+    return { a, r, ok: r === expect(a.id) };
+  });
+  const allOk = results.every((r) => r.ok);
+  return /* @__PURE__ */ jsxs("div", { style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    padding: "8px 0",
+    borderBottom: "1px solid #1e1e3a"
+  }, children: [
+    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontFamily: "monospace", fontSize: 13, width: 160 }, children: label }),
+    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: results.map(({ a, r, ok }) => /* @__PURE__ */ jsxs("div", { style: {
+      fontFamily: "monospace",
+      fontSize: 11,
+      color: ok ? "#00ff88" : "#ff4444",
+      background: ok ? "#001a0d" : "#1a0000",
+      border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
+      borderRadius: 6,
+      padding: "3px 8px"
+    }, children: [
+      a.label,
+      "\u2192",
+      r
+    ] }, a.id)) }),
+    /* @__PURE__ */ jsx("div", { style: {
+      marginLeft: "auto",
+      fontFamily: "monospace",
+      fontSize: 12,
+      color: allOk ? "#00ff88" : "#ff4444"
+    }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
+  ] });
+}
+function BinaryLawTable({ label, lhs, rhs }) {
+  const results = L4.map((a) => L4.map((b) => {
+    const l = lhs(a.id, b.id);
+    const r = rhs(a.id, b.id);
+    return { l, r, ok: l === r };
+  }));
+  const allOk = results.every((row) => row.every((c) => c.ok));
+  return /* @__PURE__ */ jsxs("div", { style: { marginTop: 20 }, children: [
+    /* @__PURE__ */ jsxs("div", { style: { marginBottom: 10, color: "#4a4a7a", fontSize: 11, display: "flex", alignItems: "center", gap: 10 }, children: [
+      /* @__PURE__ */ jsx("span", { children: label }),
+      /* @__PURE__ */ jsx("span", { style: { color: allOk ? "#00ff88" : "#ff4444", fontSize: 12 }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
+    ] }),
+    /* @__PURE__ */ jsxs("table", { style: { borderCollapse: "collapse", fontFamily: "monospace", fontSize: 12 }, children: [
+      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("th", { style: { color: "#4a4a7a", padding: "4px 10px", borderBottom: "1px solid #1e1e3a", borderRight: "1px solid #1e1e3a" }, children: "A \\ B" }),
+        L4.map((e) => /* @__PURE__ */ jsx("th", { style: { color: e.color, padding: "4px 10px", borderBottom: "1px solid #1e1e3a" }, children: e.label }, e.id))
+      ] }) }),
+      /* @__PURE__ */ jsx("tbody", { children: L4.map((a, i) => /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("td", { style: { color: a.color, padding: "4px 10px", textAlign: "center", borderRight: "1px solid #1e1e3a" }, children: a.label }),
+        L4.map((b, j) => {
+          const { l, r, ok } = results[i][j];
+          return /* @__PURE__ */ jsx("td", { style: {
+            color: ok ? "#00ff88" : "#ff4444",
+            background: ok ? "#001a0d" : "#1a0000",
+            padding: "4px 10px",
+            textAlign: "center",
+            border: `1px solid ${ok ? "#00ff8820" : "#ff444440"}`
+          }, children: ok ? `${l} \u2713` : `${l}\u2260${r}` }, b.id);
+        })
+      ] }, a.id)) })
+    ] })
+  ] });
+}
 const CALC_OPS = [
   { id: "neg", sym: "\xAC", arity: 1, fn: neg, label: "\xACA = iA\u207B\xB9", color: "#B388FF" },
   { id: "conj", sym: "\u2227", arity: 2, fn: conj, label: "A\u2227B = AB", color: "#00E5FF" },
@@ -531,89 +599,15 @@ function App() {
           const r = neg(neg(a));
           return r === a ? "+1" : "+i";
         }, expected: "T" }),
-        /* @__PURE__ */ jsx("div", { style: { marginTop: 24, marginBottom: 12, color: "#4a4a7a", fontSize: 11 }, children: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u7B2C\u4E00\u6CD5\u5247\u3000\xAC(A\u2227B) = \xACA\u2228\xACB\u3000\uFF08\u516816\u7D44\uFF09" }),
-        /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: L4.flatMap((a) => L4.map((b) => {
-          const lhs = neg(conj(a.id, b.id));
-          const rhs = disj(neg(a.id), neg(b.id));
-          const ok = lhs === rhs;
-          return /* @__PURE__ */ jsxs("div", { style: {
-            fontFamily: "monospace",
-            fontSize: 10,
-            color: ok ? "#00ff88" : "#ff4444",
-            background: ok ? "#001a0d" : "#1a0000",
-            border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
-            borderRadius: 5,
-            padding: "2px 7px"
-          }, children: [
-            a.label,
-            ",",
-            b.label,
-            ":",
-            ok ? "\u2713" : "\u2717"
-          ] }, `${a.id}${b.id}`);
-        })) }),
-        /* @__PURE__ */ jsx("div", { style: { marginTop: 20, marginBottom: 12, color: "#4a4a7a", fontSize: 11 }, children: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u7B2C\u4E8C\u6CD5\u5247\u3000\xAC(A\u2228B) = \xACA\u2227\xACB\u3000\uFF08\u516816\u7D44\uFF09" }),
-        /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: L4.flatMap((a) => L4.map((b) => {
-          const lhs = neg(disj(a.id, b.id));
-          const rhs = conj(neg(a.id), neg(b.id));
-          const ok = lhs === rhs;
-          return /* @__PURE__ */ jsxs("div", { style: {
-            fontFamily: "monospace",
-            fontSize: 10,
-            color: ok ? "#00ff88" : "#ff4444",
-            background: ok ? "#001a0d" : "#1a0000",
-            border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
-            borderRadius: 5,
-            padding: "2px 7px"
-          }, children: [
-            a.label,
-            ",",
-            b.label,
-            ":",
-            ok ? "\u2713" : "\u2717"
-          ] }, `${a.id}${b.id}`);
-        })) }),
-        /* @__PURE__ */ jsx("div", { style: { marginTop: 20, marginBottom: 12, color: "#4a4a7a", fontSize: 11 }, children: "\u5BFE\u5076\u5F8B\u3000(A\u21D2B) = (\xACB\u21D2\xACA)\u3000\uFF08\u516816\u7D44\uFF09" }),
-        /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: L4.flatMap((a) => L4.map((b) => {
-          const lhs = impl(a.id, b.id);
-          const rhs = impl(neg(b.id), neg(a.id));
-          const ok = lhs === rhs;
-          return /* @__PURE__ */ jsxs("div", { style: {
-            fontFamily: "monospace",
-            fontSize: 10,
-            color: ok ? "#00ff88" : "#ff4444",
-            background: ok ? "#001a0d" : "#1a0000",
-            border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
-            borderRadius: 5,
-            padding: "2px 7px"
-          }, children: [
-            a.label,
-            ",",
-            b.label,
-            ":",
-            ok ? "\u2713" : "\u2717"
-          ] }, `${a.id}${b.id}`);
-        })) }),
-        /* @__PURE__ */ jsx("div", { style: { marginTop: 20, marginBottom: 12, color: "#4a4a7a", fontSize: 11 }, children: "\u30E2\u30FC\u30C0\u30B9\u30DD\u30CD\u30F3\u30B9\u3000A\u2227(A\u21D2B) = B\u3000\uFF08\u516816\u7D44\uFF09" }),
-        /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: L4.flatMap((a) => L4.map((b) => {
-          const lhs = conj(a.id, impl(a.id, b.id));
-          const ok = lhs === b.id;
-          return /* @__PURE__ */ jsxs("div", { style: {
-            fontFamily: "monospace",
-            fontSize: 10,
-            color: ok ? "#00ff88" : "#ff4444",
-            background: ok ? "#001a0d" : "#1a0000",
-            border: `1px solid ${ok ? "#00ff8840" : "#ff444440"}`,
-            borderRadius: 5,
-            padding: "2px 7px"
-          }, children: [
-            a.label,
-            ",",
-            b.label,
-            ":",
-            ok ? "\u2713" : "\u2717"
-          ] }, `${a.id}${b.id}`);
-        })) })
+        /* @__PURE__ */ jsx(LawRow, { label: "\u542B\u610F\u306E\u53CD\u5C04\u5F8B A\u21D2A = T", fn: (a) => impl(a, a), expect: () => "+1" }),
+        /* @__PURE__ */ jsx(LawRow, { label: "\u80CC\u7406\u6CD5 \xACA\u21D2\u22A5 = A", fn: (a) => impl(neg(a), "+i"), expect: (a) => a }),
+        /* @__PURE__ */ jsx(LawRow, { label: "\u7206\u767A\u6291\u5236 \u22A5\u21D2B = \u2212iB", fn: (b) => impl("+i", b), expect: (b) => conj("-i", b) }),
+        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u7B2C\u4E00\u6CD5\u5247\u3000\xAC(A\u2227B) = \xACA\u2228\xACB", lhs: (a, b) => neg(conj(a, b)), rhs: (a, b) => disj(neg(a), neg(b)) }),
+        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30C9\u30FB\u30E2\u30EB\u30AC\u30F3\u7B2C\u4E8C\u6CD5\u5247\u3000\xAC(A\u2228B) = \xACA\u2227\xACB", lhs: (a, b) => neg(disj(a, b)), rhs: (a, b) => conj(neg(a), neg(b)) }),
+        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u5BFE\u5076\u5F8B\u3000(A\u21D2B) = (\xACB\u21D2\xACA)", lhs: (a, b) => impl(a, b), rhs: (a, b) => impl(neg(b), neg(a)) }),
+        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30E2\u30FC\u30C0\u30B9\u30DD\u30CD\u30F3\u30B9\u3000A\u2227(A\u21D2B) = B", lhs: (a, b) => conj(a, impl(a, b)), rhs: (a, b) => b }),
+        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u30E2\u30FC\u30C0\u30B9\u30C8\u30EC\u30F3\u30B9\u3000\xACB\u2227(A\u21D2B) = \xACA", lhs: (a, b) => conj(neg(b), impl(a, b)), rhs: (a, b) => neg(a) }),
+        /* @__PURE__ */ jsx(BinaryLawTable, { label: "\u666E\u904D\u7684\u53CC\u6761\u4EF6\u3000(A\u21D2B)\u2227(B\u21D2A) = T", lhs: (a, b) => conj(impl(a, b), impl(b, a)), rhs: () => "+1" })
       ] })
     ] })
   ] }) });
