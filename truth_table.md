@@ -1,0 +1,151 @@
+# UnitaryPhaseLogic — Truth Table
+
+Angles are expressed in radians. Classical mapping is done with cos(θ) (points with cos(θ) < 0 are outside the classical domain):
+
+| Label | Matrix value | Phase | cos(θ) | Classical logic |
+| --- | --- | --- | --- | --- |
+| T  (True)      |  1 | θ = 0    | > 0 | T |
+| F  (False)      |  i | θ = π/2  | = 0 | F |
+| ¬T (Anti-True)    | -1 | θ = π    | < 0 | — |
+| ¬F (Anti-False)    | -i | θ = 3π/2 | = 0 | F |
+| N  (Neither) | other | θ = other | — | — |
+
+---
+
+## NOT (Negation): ¬A = i · A†
+
+| A | NOT(A) | Classical logic |
+| --- | --- | --- |
+| T | F | F |
+| F | T | T |
+| ¬T | ¬F | F |
+| ¬F | ¬T | — |
+| N | N | — |
+
+---
+
+## AND (Conjunction): A ∧ B = A · B
+
+| A | B | A ∧ B | Classical logic |
+| --- | --- | --- | --- |
+| T | T | T | T |
+| T | F | F | F |
+| T | ¬T | ¬T | — |
+| T | ¬F | ¬F | F |
+| T | N | N | — |
+| F | T | F | F |
+| F | F | ¬T | — |
+| F | ¬T | ¬F | F |
+| F | ¬F | T | T |
+| F | N | N | — |
+| ¬T | T | ¬T | — |
+| ¬T | F | ¬F | F |
+| ¬T | ¬T | T | T |
+| ¬T | ¬F | F | F |
+| ¬T | N | N | — |
+| ¬F | T | ¬F | F |
+| ¬F | F | T | T |
+| ¬F | ¬T | F | F |
+| ¬F | ¬F | ¬T | — |
+| ¬F | N | N | — |
+| N | T | N | — |
+| N | F | N | — |
+| N | ¬T | N | — |
+| N | ¬F | N | — |
+| N | N | N | — |
+
+---
+
+## OR (Disjunction): A ∨ B = −i · (A · B)
+
+| A | B | A ∨ B | Classical logic |
+| --- | --- | --- | --- |
+| T | T | ¬F | F |
+| T | F | T | T |
+| T | ¬T | F | F |
+| T | ¬F | ¬T | — |
+| T | N | N | — |
+| F | T | T | T |
+| F | F | F | F |
+| F | ¬T | ¬T | — |
+| F | ¬F | ¬F | F |
+| F | N | N | — |
+| ¬T | T | F | F |
+| ¬T | F | ¬T | — |
+| ¬T | ¬T | ¬F | F |
+| ¬T | ¬F | T | T |
+| ¬T | N | N | — |
+| ¬F | T | ¬T | — |
+| ¬F | F | ¬F | F |
+| ¬F | ¬T | T | T |
+| ¬F | ¬F | F | F |
+| ¬F | N | N | — |
+| N | T | N | — |
+| N | F | N | — |
+| N | ¬T | N | — |
+| N | ¬F | N | — |
+| N | N | N | — |
+
+---
+
+## IMPLIES: A ⇒ B = B · A†
+
+| A | B | A ⇒ B | Classical logic |
+| --- | --- | --- | --- |
+| T | T | T | T |
+| T | F | F | F |
+| T | ¬T | ¬T | — |
+| T | ¬F | ¬F | F |
+| T | N | N | — |
+| F | T | ¬F | F |
+| F | F | T | T |
+| F | ¬T | F | F |
+| F | ¬F | ¬T | — |
+| F | N | N | — |
+| ¬T | T | ¬T | — |
+| ¬T | F | ¬F | F |
+| ¬T | ¬T | T | T |
+| ¬T | ¬F | F | F |
+| ¬T | N | N | — |
+| ¬F | T | F | F |
+| ¬F | F | ¬T | — |
+| ¬F | ¬T | ¬F | F |
+| ¬F | ¬F | T | T |
+| ¬F | N | N | — |
+| N | T | N | — |
+| N | F | N | — |
+| N | ¬T | N | — |
+| N | ¬F | N | — |
+| N | N | T | T |
+
+---
+
+## EQAL (Biconditional): A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)
+
+| A | B | A ⇔ B | Classical logic |
+| --- | --- | --- | --- |
+| T | T | T | T |
+| T | F | T | T |
+| T | ¬T | T | T |
+| T | ¬F | T | T |
+| T | N | T | T |
+| F | T | T | T |
+| F | F | T | T |
+| F | ¬T | T | T |
+| F | ¬F | T | T |
+| F | N | T | T |
+| ¬T | T | T | T |
+| ¬T | F | T | T |
+| ¬T | ¬T | T | T |
+| ¬T | ¬F | T | T |
+| ¬T | N | T | T |
+| ¬F | T | T | T |
+| ¬F | F | T | T |
+| ¬F | ¬T | T | T |
+| ¬F | ¬F | T | T |
+| ¬F | N | T | T |
+| N | T | T | T |
+| N | F | T | T |
+| N | ¬T | T | T |
+| N | ¬F | T | T |
+| N | N | T | T |
