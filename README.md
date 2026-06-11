@@ -29,7 +29,7 @@ The classical mapping uses `cos(θ)`: positive → T, zero → F, negative → o
 
 ### Theorems that hold universally (for all phases)
 
-The following identities are proven for arbitrary propositions A and B represented as any unitary phase (not just the canonical four values). All six are verified by the test suite.
+The following identities are proven for arbitrary propositions A and B represented as any unitary phase (not just the canonical four values). All eight are verified by the test suite.
 
 | # | Theorem | Identity | Note |
 |---|---------|----------|------|
@@ -39,6 +39,8 @@ The following identities are proven for arbitrary propositions A and B represent
 | 4 | **Law of Excluded Middle** | A ∨ ¬A = T | Converges to T for every phase |
 | 5 | **Law of Non-Contradiction** | A ∧ ¬A = F | Always yields the constant matrix i |
 | 6 | **Explosion Suppression** | ⊥ ⇒ B = −i · B | Contradiction implies a deterministic −90° phase shift, not arbitrary truth |
+| 7 | **Contrapositive** | A ⇒ B = ¬B ⇒ ¬A | Holds for all phases |
+| 8 | **Proof by Contradiction** | ¬A ⇒ ⊥ = A | Derives directly from the Contrapositive |
 
 **Proofs** (for 1×1 unitary matrices where A = e^(iθ)):
 
@@ -46,6 +48,9 @@ The following identities are proven for arbitrary propositions A and B represent
 - *Excluded Middle*: A ∨ ¬A = −i·(A·i·A†) = −i·i·(A·A†) = 1 = T ✓
 - *Non-Contradiction*: A ∧ ¬A = A·(i·A†) = i·(A·A†) = i = F ✓
 - *Modus Ponens*: A ∧ (A⇒B) = A·(B·A†) = B·(A·A†) = B ✓
+- *Contrapositive*: A ⇒ B = B·A†; ¬B ⇒ ¬A = (i·A†)†·(i·B†) = (−i·A)·(i·B†) wait — directly: ¬B⇒¬A = (¬A)·(¬B)† = (i·A†)·(i·B†)† = (i·A†)·(−i·B) = (i)(−i)·A†·B = B·A† = A⇒B ✓
+- *Proof by Contradiction*: Apply Contrapositive with B = ⊥ = F: (¬A ⇒ ⊥) = (¬⊥ ⇒ A) = (¬F ⇒ A) = (T ⇒ A) = A·T† = A ✓  
+  Direct matrix proof: ⊥·(¬A)† = i·(i·A†)† = i·(−i·A) = A ✓
 
 ### Additional structural consequences
 

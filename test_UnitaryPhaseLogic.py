@@ -55,6 +55,16 @@ class TestUnitaryTheorems(unittest.TestCase):
         A, B = self.A, self.B
         self.assertEqual(A.IMPLIES(B), B.NOT().IMPLIES(A.NOT()))
 
+    def test_proof_by_contradiction(self):
+        """定理8 [背理法]: ¬A ⇒ ⊥ = A が行列演算で成立。
+
+        対偶律を A=¬A, B=⊥ に適用: (¬A ⇒ ⊥) = (¬⊥ ⇒ A) = (T ⇒ A) = A
+        行列証明: ⊥ · (¬A)† = i · (i·A†)† = i · (−i·A) = A
+        """
+        A = self.A
+        bot = self.FALSE  # ⊥ = F = i
+        self.assertEqual(A.NOT().IMPLIES(bot), A)
+
 
 if __name__ == "__main__":
     unittest.main()
