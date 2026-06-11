@@ -4,20 +4,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "test:tsx": "tsx --test test_u1_logic_core.test.ts"
+    "test:js": "node --test test_u1_logic_core.test.js"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "tsx": "4.22.4",
-    "typescript": "~5.6.2",
     "vite": "^6.0.1"
   }
 }

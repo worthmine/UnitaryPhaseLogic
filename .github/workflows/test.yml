@@ -21,8 +21,8 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Run TSX tests
-        run: npm run test:tsx
+      - name: Run JS tests
+        run: npm run test:js
 
       - name: Set up Python
         uses: actions/setup-python@v5

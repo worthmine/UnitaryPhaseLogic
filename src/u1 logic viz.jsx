@@ -131,7 +131,7 @@ function BinaryDiagram({ op, opLabel, title, note, color }) {
 
       {/* Selectors */}
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-        {([["A", selA, setSelA] as const, ["B", selB, setSelB] as const] as const).map(([lbl, val, setter]) => (
+        {([["A", selA, setSelA], ["B", selB, setSelB]]).map(([lbl, val, setter]) => (
           <div key={lbl} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>            <span style={{ color: "#4a4a7a", fontSize: 11, fontFamily: "monospace" }}>{lbl}</span>
             <div style={{ display: "flex", gap: 4 }}>
               {L4.map(e => (
