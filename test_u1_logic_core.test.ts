@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { conj, disj, impl, neg, L4 } from "./u1_logic_core.ts";
+import { conj, disj, impl, neg, L4 } from "./src/u1_logic_core.ts";
 
 test("negation is involutive on L4", () => {
   for (const value of L4) {
