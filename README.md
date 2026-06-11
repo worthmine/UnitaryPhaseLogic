@@ -23,7 +23,7 @@ The classical mapping uses `cos(θ)`: positive → T, zero → F, negative → o
 | AND   | A ∧ B = A · B    | Matrix (complex) multiplication — phase addition on the unit circle |
 | OR    | A ∨ B = −i·(A·B) | AND followed by a −90° rotation |
 | IMPLIES | A ⇒ B = B · A† | Phase difference from A to B |
-| EQAL  | A ⇔ B = (A⇒B) ∧ (B⇒A) | Mutual implication |
+| EQAL  | A ⇔ B = B · A† | Phase difference from A to B; T only when A = B |
 
 ## Logical Consequences
 
@@ -53,12 +53,11 @@ The following identities are proven for arbitrary propositions A and B represent
 |-------------|----------|---------|
 | **Reflexivity of implication** | A ⇒ A = T | Every proposition implies itself |
 | **Unitarity identity** | A · A† = T | Every proposition composed with its own conjugate collapses to True |
-| **Universal biconditional** | A ⇔ B = T for all A, B | Every pair of propositions is biconditionally equivalent (phase cancellation) |
+| **Reflexivity of biconditional** | A ⇔ A = T | Every proposition is biconditionally equivalent to itself |
 
-**Proof of universal biconditional**:
-A ⇔ B = (B·A†)·(A·B†) = B·(A†·A)·B† = B·T·B† = B·B† = T ✓
-
-This is a fundamental departure from classical logic: the `EQAL` operator always returns T regardless of the operands. It measures structural biconditional equivalence within the unitary framework, not value equality.
+> **Note**: `(A ⇒ B) ∧ (B ⇒ A)` is a theorem that always yields T due to phase cancellation
+> and carries no discriminating power as an operation. Defining `EQAL` as `A ⇒ B`
+> makes it a meaningful operation that returns T if and only if A = B.
 
 ### Algebraic structure
 

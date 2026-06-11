@@ -152,7 +152,7 @@ def generate() -> str:
     sections += build_binary_table("⇒", lambda a, b: a.IMPLIES(b))
     sections += [
         "\n---\n",
-        "## EQAL (同値): A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)\n",
+        "## EQAL (同値): A ⇔ B = B · A†\n",
     ]
     sections += build_binary_table("⇔", lambda a, b: a.EQAL(b))
     return "\n".join(sections) + "\n"

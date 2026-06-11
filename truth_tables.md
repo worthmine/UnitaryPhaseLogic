@@ -120,32 +120,32 @@
 
 ---
 
-## EQAL (同値): A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)
+## EQAL (同値): A ⇔ B = B · A†
 
 | A | B | A ⇔ B | 古典論理 |
 | --- | --- | --- | --- |
 | T | T | T | T |
-| T | F | T | T |
-| T | ¬T | T | T |
-| T | ¬F | T | T |
-| T | N | T | T |
-| F | T | T | T |
+| T | F | F | F |
+| T | ¬T | ¬T | — |
+| T | ¬F | ¬F | F |
+| T | N | N | — |
+| F | T | ¬F | F |
 | F | F | T | T |
-| F | ¬T | T | T |
-| F | ¬F | T | T |
-| F | N | T | T |
-| ¬T | T | T | T |
-| ¬T | F | T | T |
+| F | ¬T | F | F |
+| F | ¬F | ¬T | — |
+| F | N | N | — |
+| ¬T | T | ¬T | — |
+| ¬T | F | ¬F | F |
 | ¬T | ¬T | T | T |
-| ¬T | ¬F | T | T |
-| ¬T | N | T | T |
-| ¬F | T | T | T |
-| ¬F | F | T | T |
-| ¬F | ¬T | T | T |
+| ¬T | ¬F | F | F |
+| ¬T | N | N | — |
+| ¬F | T | F | F |
+| ¬F | F | ¬T | — |
+| ¬F | ¬T | ¬F | F |
 | ¬F | ¬F | T | T |
-| ¬F | N | T | T |
-| N | T | T | T |
-| N | F | T | T |
-| N | ¬T | T | T |
-| N | ¬F | T | T |
+| ¬F | N | N | — |
+| N | T | N | — |
+| N | F | N | — |
+| N | ¬T | N | — |
+| N | ¬F | N | — |
 | N | N | T | T |
