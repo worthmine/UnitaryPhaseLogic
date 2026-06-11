@@ -12,8 +12,8 @@ FALSE = e^(i·π/2)  = i   (θ = π/2)
 代表的な真理値ラベル:
   T  (真)      θ = 0      行列値 =  1   cos(θ) > 0
   F  (偽)      θ = π/2    行列値 =  i   cos(θ) = 0
-  ¬T (反真)    θ = π      行列値 = -1   cos(θ) < 0  → 古典論理への写像なし
-  ¬F (反偽)    θ = 3π/2   行列値 = -i   cos(θ) = 0
+  T̃ (反真)    θ = π      行列値 = -1   cos(θ) < 0  → 古典論理への写像なし
+  F̃ (反偽)    θ = 3π/2   行列値 = -i   cos(θ) = 0
   N  (Neither) その他の位相
 
 古典論理への写像は cos(θ) で行う:
@@ -30,15 +30,15 @@ from UnitaryPhaseLogic import UnitaryPhaseLogic
 # ────────────────────────────────────────────────────────────
 TRUE  = UnitaryPhaseLogic(0.0)
 FALSE = UnitaryPhaseLogic(np.pi / 2)
-NOT_T = UnitaryPhaseLogic(np.pi)            # ¬T (-1, θ = π)
-NOT_F = UnitaryPhaseLogic(3 * np.pi / 2)   # ¬F (-i, θ = 3π/2)
+NOT_T = UnitaryPhaseLogic(np.pi)            # T̃ (-1, θ = π)
+NOT_F = UnitaryPhaseLogic(3 * np.pi / 2)   # F̃ (-i, θ = 3π/2)
 N     = UnitaryPhaseLogic(5 * np.pi / 6)   # N  (e^{i5π/6}, θ = 5π/6)
 
 INPUTS = [
     ("T",  TRUE),
     ("F",  FALSE),
-    ("¬T", NOT_T),
-    ("¬F", NOT_F),
+    ("T̃", NOT_T),
+    ("F̃", NOT_F),
     ("N",  N),
 ]
 
@@ -46,8 +46,8 @@ INPUTS = [
 _CANONICAL: list[tuple[complex, str]] = [
     ( 1+0j, "T"),    # θ = 0
     ( 0+1j, "F"),    # θ = π/2
-    (-1+0j, "¬T"),   # θ = π
-    ( 0-1j, "¬F"),   # θ = 3π/2
+    (-1+0j, "T̃"),   # θ = π
+    ( 0-1j, "F̃"),   # θ = 3π/2
 ]
 
 
@@ -128,8 +128,8 @@ def generate() -> str:
         "| --- | --- | --- | --- | --- |",
         "| T  (真)      |  1 | θ = 0    | > 0 | T |",
         "| F  (偽)      |  i | θ = π/2  | = 0 | F |",
-        "| ¬T (反真)    | -1 | θ = π    | < 0 | — |",
-        "| ¬F (反偽)    | -i | θ = 3π/2 | = 0 | F |",
+        "| T̃ (反真)    | -1 | θ = π    | < 0 | — |",
+        "| F̃ (反偽)    | -i | θ = 3π/2 | = 0 | F |",
         "| N  (Neither) | その他 | θ = その他 | — | — |\n",
         "---\n",
         "## NOT (否定): ¬A = i · A†\n",
