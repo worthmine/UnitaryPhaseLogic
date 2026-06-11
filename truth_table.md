@@ -117,35 +117,3 @@ Angles are expressed in radians. Classical mapping is done with cos(θ) (points 
 | N | ¬T | N | — |
 | N | ¬F | N | — |
 | N | N | T | T |
-
----
-
-## EQAL (Biconditional): A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)
-
-| A | B | A ⇔ B | Classical logic |
-| --- | --- | --- | --- |
-| T | T | T | T |
-| T | F | T | T |
-| T | ¬T | T | T |
-| T | ¬F | T | T |
-| T | N | T | T |
-| F | T | T | T |
-| F | F | T | T |
-| F | ¬T | T | T |
-| F | ¬F | T | T |
-| F | N | T | T |
-| ¬T | T | T | T |
-| ¬T | F | T | T |
-| ¬T | ¬T | T | T |
-| ¬T | ¬F | T | T |
-| ¬T | N | T | T |
-| ¬F | T | T | T |
-| ¬F | F | T | T |
-| ¬F | ¬T | T | T |
-| ¬F | ¬F | T | T |
-| ¬F | N | T | T |
-| N | T | T | T |
-| N | F | T | T |
-| N | ¬T | T | T |
-| N | ¬F | T | T |
-| N | N | T | T |

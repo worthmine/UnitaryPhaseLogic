@@ -150,11 +150,13 @@ def generate() -> str:
         "## IMPLIES (含意): A ⇒ B = B · A†\n",
     ]
     sections += build_binary_table("⇒", lambda a, b: a.IMPLIES(b))
-    sections += [
-        "\n---\n",
-        "## EQAL (同値): A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)\n",
-    ]
-    sections += build_binary_table("⇔", lambda a, b: a.EQAL(b))
+    # 注意: 同値 (EQAL) の導出は任意の二つの命題 A, B が恒真になる位相を
+    # 作ってしまうため、演算子として定義すべきではない。真理値表からも削除。
+    # sections += [
+    #     "\n---\n",
+    #     "## EQAL (同値): A ⇔ B = (A ⇒ B) ∧ (B ⇒ A)\n",
+    # ]
+    # sections += build_binary_table("⇔", lambda a, b: a.EQAL(b))
     return "\n".join(sections) + "\n"
 
 
