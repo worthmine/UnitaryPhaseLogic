@@ -263,7 +263,109 @@ function TautologyRow({ label, fn, expected }) {
     }, children: allOk ? "\u2713 \u6052\u6210\u7ACB" : "\u2717" })
   ] });
 }
+const CALC_OPS = [
+  { id: "neg", sym: "\xAC", arity: 1, fn: neg, label: "\xACA = iA\u207B\xB9", color: "#B388FF" },
+  { id: "conj", sym: "\u2227", arity: 2, fn: conj, label: "A\u2227B = AB", color: "#00E5FF" },
+  { id: "disj", sym: "\u2228", arity: 2, fn: disj, label: "A\u2228B = \u2212iAB", color: "#FF4081" },
+  { id: "impl", sym: "\u21D2", arity: 2, fn: impl, label: "A\u21D2B = BA\u207B\xB9", color: "#FFD740" }
+];
+function ValuePicker({ label, value, onChange }) {
+  return /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }, children: [
+    /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a", fontSize: 12, fontFamily: "monospace" }, children: label }),
+    /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: L4.map((e) => /* @__PURE__ */ jsxs("button", { onClick: () => onChange(e.id), style: {
+      background: value === e.id ? e.color : "#11112a",
+      color: value === e.id ? "#000" : e.color,
+      border: `1px solid ${e.color}`,
+      borderRadius: 8,
+      padding: "8px 12px",
+      fontSize: 14,
+      fontFamily: "monospace",
+      cursor: "pointer",
+      transition: "all 0.15s",
+      minWidth: 44
+    }, children: [
+      /* @__PURE__ */ jsx("div", { children: e.label }),
+      /* @__PURE__ */ jsx("div", { style: { fontSize: 10, opacity: 0.8 }, children: e.iLabel })
+    ] }, e.id)) })
+  ] });
+}
+function Calculator() {
+  const [selA, setSelA] = useState("+1");
+  const [opId, setOpId] = useState("conj");
+  const [selB, setSelB] = useState("+i");
+  const op = CALC_OPS.find((o) => o.id === opId);
+  const result = op.arity === 1 ? op.fn(selA) : op.fn(selA, selB);
+  const aElem = getElem(selA);
+  const bElem = getElem(selB);
+  const resElem = getElem(result);
+  return /* @__PURE__ */ jsxs("div", { style: {
+    background: "#0d0d1a",
+    border: "1px solid #1e1e3a",
+    borderRadius: 16,
+    padding: "24px 20px 18px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 16,
+    minWidth: 280,
+    maxWidth: 640
+  }, children: [
+    /* @__PURE__ */ jsx("div", { style: { color: "#a0a0c0", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "monospace" }, children: "\u8AD6\u7406\u6F14\u7B97\u96FB\u5353" }),
+    /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center", alignItems: "flex-start" }, children: [
+      /* @__PURE__ */ jsx(ValuePicker, { label: "A", value: selA, onChange: setSelA }),
+      /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }, children: [
+        /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a", fontSize: 12, fontFamily: "monospace" }, children: "\u6F14\u7B97\u5B50" }),
+        /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6 }, children: CALC_OPS.map((o) => /* @__PURE__ */ jsx("button", { onClick: () => setOpId(o.id), title: o.label, style: {
+          background: opId === o.id ? o.color : "#11112a",
+          color: opId === o.id ? "#000" : o.color,
+          border: `1px solid ${o.color}`,
+          borderRadius: 8,
+          padding: "8px 12px",
+          fontSize: 16,
+          fontFamily: "monospace",
+          cursor: "pointer",
+          transition: "all 0.15s",
+          minWidth: 44
+        }, children: o.sym }, o.id)) })
+      ] }),
+      op.arity === 2 && /* @__PURE__ */ jsx(ValuePicker, { label: "B", value: selB, onChange: setSelB })
+    ] }),
+    /* @__PURE__ */ jsxs("svg", { width: 260, height: 260, viewBox: "0 0 260 260", children: [
+      /* @__PURE__ */ jsx("line", { x1: CX, y1: 10, x2: CX, y2: 250, stroke: "#1e1e3a", strokeWidth: 1 }),
+      /* @__PURE__ */ jsx("line", { x1: 10, y1: CY, x2: 250, y2: CY, stroke: "#1e1e3a", strokeWidth: 1 }),
+      /* @__PURE__ */ jsx("circle", { cx: CX, cy: CY, r: R, fill: "none", stroke: "#1e1e3a", strokeWidth: 1.5 }),
+      L4.map((e) => {
+        const { x, y } = polarToXY(e.phase);
+        return /* @__PURE__ */ jsx("circle", { cx: x, cy: y, r: 7, fill: "#11112a", stroke: e.color, strokeWidth: 1, opacity: 0.4 }, e.id);
+      }),
+      /* @__PURE__ */ jsx(Arrow, { from: aElem, to: resElem, color: "#00E5FF", curved: selA !== result }),
+      op.arity === 2 && selB !== selA && /* @__PURE__ */ jsx(Arrow, { from: bElem, to: resElem, color: "#FF4081", curved: true, dashed: true }),
+      /* @__PURE__ */ jsx(NodeDot, { elem: aElem, size: 9 }),
+      op.arity === 2 && selB !== selA && /* @__PURE__ */ jsx(NodeDot, { elem: bElem, size: 9 }),
+      /* @__PURE__ */ jsx(NodeDot, { elem: resElem, size: 11, pulse: true }),
+      L4.map((e) => {
+        const { x, y } = polarToXY(e.phase, R + 20);
+        return /* @__PURE__ */ jsx("text", { x, y, fill: e.color, fontSize: 12, fontFamily: "monospace", textAnchor: "middle", dominantBaseline: "middle", children: e.label }, e.id);
+      })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { style: { fontFamily: "monospace", fontSize: 20, color: "#ffffff", letterSpacing: "0.05em" }, children: [
+      op.arity === 1 ? /* @__PURE__ */ jsxs(Fragment, { children: [
+        /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a" }, children: op.sym }),
+        /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA })
+      ] }) : /* @__PURE__ */ jsxs(Fragment, { children: [
+        /* @__PURE__ */ jsx("span", { style: { color: aElem.color }, children: selA }),
+        /* @__PURE__ */ jsxs("span", { style: { color: "#4a4a7a" }, children: [" ", op.sym, " "] }),
+        /* @__PURE__ */ jsx("span", { style: { color: bElem.color }, children: selB })
+      ] }),
+      /* @__PURE__ */ jsx("span", { style: { color: "#4a4a7a" }, children: " = " }),
+      /* @__PURE__ */ jsx("span", { style: { color: resElem.color, fontWeight: "bold" }, children: result }),
+      /* @__PURE__ */ jsxs("span", { style: { color: "#4a4a7a", fontSize: 14 }, children: [" [", resElem.iLabel, "]"] })
+    ] }),
+    /* @__PURE__ */ jsx("div", { style: { color: "#4a4a7a", fontSize: 11, fontFamily: "monospace", textAlign: "center" }, children: op.label })
+  ] });
+}
 const TABS = [
+  { id: "calc", label: "\u96FB\u5353" },
   { id: "neg", label: "\u5426\u5B9A \xAC" },
   { id: "conj", label: "\u9023\u8A00 \u2227" },
   { id: "disj", label: "\u9078\u8A00 \u2228" },
@@ -271,7 +373,7 @@ const TABS = [
   { id: "laws", label: "\u8AF8\u6CD5\u5247" }
 ];
 function App() {
-  const [tab, setTab] = useState("neg");
+  const [tab, setTab] = useState("calc");
   return /* @__PURE__ */ jsx("div", { style: {
     minHeight: "100vh",
     background: "#080812",
@@ -300,6 +402,7 @@ function App() {
       letterSpacing: "0.05em"
     }, children: t.label }, t.id)) }),
     /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "center" }, children: [
+      tab === "calc" && /* @__PURE__ */ jsx(Calculator, {}),
       tab === "neg" && /* @__PURE__ */ jsxs(Fragment, { children: [
         /* @__PURE__ */ jsx(NegDiagram, {}),
         /* @__PURE__ */ jsxs("div", { style: {
