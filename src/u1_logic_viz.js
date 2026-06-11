@@ -452,7 +452,9 @@ function App() {
               L4.map((b) => {
                 const r = conj(a.id, b.id);
                 const re = getElem(r);
-                return /* @__PURE__ */ jsx("td", { style: { color: re.color, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
+               const classicalR = a.iLabel === "T" && b.iLabel === "T" ? "T" : "F";
+               const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
+               return /* @__PURE__ */ jsx("td", { style: { color: cellColor, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
               })
             ] }, a.id)) })
           ] })
@@ -478,7 +480,9 @@ function App() {
               L4.map((b) => {
                 const r = disj(a.id, b.id);
                 const re = getElem(r);
-                return /* @__PURE__ */ jsx("td", { style: { color: re.color, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
+               const classicalR = a.iLabel === "T" || b.iLabel === "T" ? "T" : "F";
+               const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
+               return /* @__PURE__ */ jsx("td", { style: { color: cellColor, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
               })
             ] }, a.id)) })
           ] })
@@ -504,7 +508,9 @@ function App() {
               L4.map((b) => {
                 const r = impl(a.id, b.id);
                 const re = getElem(r);
-                return /* @__PURE__ */ jsx("td", { style: { color: re.color, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
+               const classicalR = a.iLabel === "T" && b.iLabel === "F" ? "F" : "T";
+               const cellColor = re.iLabel !== classicalR ? "#B388FF" : re.color;
+               return /* @__PURE__ */ jsx("td", { style: { color: cellColor, padding: "4px 10px", textAlign: "center" }, children: r }, b.id);
               })
             ] }, a.id)) })
           ] })
